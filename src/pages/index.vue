@@ -120,7 +120,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import landingViewImage from '@/assets/img/landing-view.jpg'
+import landingViewImage from '@/assets/img/landing-view.webp'
 
 const monumentImage = ref(landingViewImage)
 
