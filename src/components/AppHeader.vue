@@ -8,7 +8,7 @@
     <v-container class="d-flex align-center" style="min-width: 0; flex-wrap: nowrap;">
       <!-- Logo -->
       <v-toolbar-title class="text-h3 font-weight-black header-title" style="white-space: nowrap; overflow: visible; padding-right: 20px;">
-        <router-link :to="baseURL" class="header-logo-link">
+        <router-link :to="/" class="header-logo-link">
           青錢萬選
         </router-link>
       </v-toolbar-title>
