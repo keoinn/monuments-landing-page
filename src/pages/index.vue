@@ -1,34 +1,34 @@
 <template>
   <div>
     <!-- Hero Section -->
-    <v-container fluid class="pa-0">
-      <v-row no-gutters>
-        <v-col cols="12">
-          <v-img
-            :src="monumentImage"
-            height="600"
-            cover
-            class="d-flex align-center"
-          >
+    <div class="hero-section">
+      <v-img
+        height="100vh"
+        cover
+        class="d-flex align-center"
+        :src="monumentImage"
+      >
             <v-overlay
-              :model-value="true"
               contained
               class="d-flex align-center justify-center"
+              no-click-animation
+              persistent
+              :model-value="true"
             >
-              <v-container>
+              <v-container class="hero-content-container">
                 <v-row justify="center">
-                  <v-col cols="12" md="8" class="text-center">
-                    <h1 class="text-h2 text-md-h1 font-weight-bold text-white mb-4">
-                      探索歷史古蹟之美
+                  <v-col cols="12" md="8" class="text-center d-flex flex-column align-center justify-center">
+                    <h1 class="hero-title text-h2 text-md-h1 font-weight-bold mb-4">
+                      青錢萬選
                     </h1>
-                    <p class="text-h6 text-white mb-6">
+                    <p class="text-h6 text-white mb-6 hero-description">
                       深入了解這座珍貴古蹟的歷史沿革、組織架構與文化價值
                     </p>
                     <v-btn
                       color="primary"
                       size="large"
                       rounded
-                      class="text-h6 px-8"
+                      class="text-h6 px-8 hero-button"
                       to="/history"
                     >
                       開始探索
@@ -38,9 +38,7 @@
               </v-container>
             </v-overlay>
           </v-img>
-        </v-col>
-      </v-row>
-    </v-container>
+    </div>
 
     <!-- Features Section -->
     <v-container class="py-16">
@@ -97,7 +95,7 @@
     </v-container>
 
     <!-- Statistics Section -->
-    <v-container fluid class="py-16" color="primary">
+    <v-container fluid class="py-16 bg-primary">
       <v-container>
         <v-row>
           <v-col
@@ -170,3 +168,153 @@ const statistics = [
   { value: '5', label: '星級評等' }
 ]
 </script>
+
+<style scoped>
+.hero-section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.hero-section .v-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 響應式調整 */
+@media (max-width: 768px) {
+  .hero-section {
+    height: 100vh;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-section {
+    height: 100vh;
+  }
+}
+
+/* 確保圖片在各種螢幕比例下都能填滿 */
+@media (orientation: landscape) and (max-height: 500px) {
+  .hero-section {
+    height: 100vh;
+  }
+}
+
+/* Hero 內容容器樣式 */
+.hero-content-container {
+  transform: translateY(-25%) translateX(-10%) !important;
+  position: relative;
+  z-index: 10;
+}
+
+/* 描述文字樣式 */
+.hero-description {
+  transform: translateX(15%) !important;
+  position: relative;
+  z-index: 10;
+}
+
+/* 按鈕樣式 */
+.hero-button {
+  transform: translateX(30%) !important;
+  position: relative;
+  z-index: 10;
+}
+
+/* 標題美化樣式 */
+.hero-title {
+  color: #ffffff;
+  text-shadow: 
+    0 0 10px rgba(0, 0, 0, 0.8),
+    0 0 20px rgba(0, 0, 0, 0.6),
+    0 0 30px rgba(0, 0, 0, 0.4);
+  position: relative;
+  padding: 20px 30px;
+  border-radius: 15px;
+  background: linear-gradient(145deg, 
+    rgba(139, 69, 19, 0.85) 0%, 
+    rgba(160, 82, 45, 0.85) 25%,
+    rgba(205, 133, 63, 0.85) 50%,
+    rgba(222, 184, 135, 0.85) 75%,
+    rgba(245, 222, 179, 0.85) 100%);
+  border: 3px solid rgba(255, 215, 0, 0.6);
+  box-shadow: 
+    0 10px 40px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.1),
+    inset 0 2px 0 rgba(255, 255, 255, 0.3);
+  display: inline-block;
+  margin: 0 auto;
+  font-family: 'Noto Serif TC', serif;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+  transform: perspective(1000px) rotateX(5deg);
+  transition: all 0.3s ease;
+}
+
+.hero-title:hover {
+  transform: perspective(1000px) rotateX(0deg) scale(1.05);
+  box-shadow:
+    0 15px 50px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.2),
+    inset 0 2px 0 rgba(255, 255, 255, 0.4);
+}
+
+.hero-title::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, 
+    #ffd700, #ffed4e, #ffd700, #ffed4e);
+  border-radius: 17px;
+  z-index: -1;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 1; }
+}
+
+/* 響應式標題調整 */
+@media (max-width: 768px) {
+  .hero-title {
+    padding: 20px 35px;
+    font-size: 2.2rem !important;
+    transform: perspective(1000px) rotateX(2deg);
+    white-space: nowrap;
+  }
+  
+  .hero-title:hover {
+    transform: perspective(1000px) rotateX(0deg) scale(1.02);
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-title {
+    padding: 15px 25px;
+    font-size: 1.8rem !important;
+    transform: perspective(1000px) rotateX(1deg);
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+  
+  .hero-title:hover {
+    transform: perspective(1000px) rotateX(0deg) scale(1.01);
+  }
+}
+
+@media (max-width: 360px) {
+  .hero-title {
+    padding: 12px 20px;
+    font-size: 1.5rem !important;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+  }
+}
+</style>
