@@ -3,11 +3,14 @@
     color="primary"
     elevation="0"
     height="80"
+    style="z-index: 1000;"
   >
     <v-container class="d-flex align-center" style="min-width: 0; flex-wrap: nowrap;">
       <!-- Logo -->
       <v-toolbar-title class="text-h3 font-weight-black header-title" style="white-space: nowrap; overflow: visible; padding-right: 20px;">
-        青錢萬選
+        <router-link :to="baseURL" class="header-logo-link">
+          青錢萬選
+        </router-link>
       </v-toolbar-title>
 
       <!-- Navigation Links -->
@@ -41,13 +44,15 @@
       temporary
       location="right"
       width="300"
+      style="z-index: 1005 !important; height: 100vh !important;"
     >
-      <v-list>
+      <v-list class="pa-0" style="height: 100%;">
         <v-list-item
           v-for="item in navItems"
           :key="item.name"
           :to="item.to"
           @click="drawer = false"
+          class="py-4"
         >
           <v-list-item-title class="header-menu-mobile">{{ item.name }}</v-list-item-title>
         </v-list-item>
@@ -60,6 +65,9 @@
 import { ref } from 'vue'
 
 const drawer = ref(false)
+
+// 讀取環境變數中的 baseURL
+const baseURL = import.meta.env.VITE_DEPLOY_URL || '/'
 
 const navItems = [
   { name: '首頁', to: '/' },
@@ -87,6 +95,18 @@ const navItems = [
   font-weight: 900 !important;
 }
 
+/* Logo 連結樣式 */
+.header-logo-link {
+  color: inherit !important;
+  text-decoration: none !important;
+  transition: opacity 0.3s ease;
+}
+
+.header-logo-link:hover {
+  opacity: 0.8;
+  text-decoration: none !important;
+}
+
 .header-menu {
   font-family: 'Noto Serif TC', serif !important;
   letter-spacing: 0.05em;
@@ -99,6 +119,17 @@ const navItems = [
   letter-spacing: 0.05em;
   font-weight: 700 !important;
   font-size: 1rem !important;
+}
+
+/* 確保手機版選單正確顯示 */
+.v-navigation-drawer--mobile {
+  height: 100vh !important;
+  min-height: 100vh !important;
+}
+
+.v-navigation-drawer__content {
+  height: 100% !important;
+  min-height: 100% !important;
 }
 
 /* 響應式設計 */

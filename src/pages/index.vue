@@ -208,14 +208,14 @@ const statistics = [
 .hero-content-container {
   transform: translateY(-25%) translateX(-10%) !important;
   position: relative;
-  z-index: 10;
+  z-index: 1;
 }
 
 /* 描述文字樣式 */
 .hero-description {
   transform: translateX(15%) !important;
   position: relative;
-  z-index: 10;
+  z-index: 1;
   white-space: normal !important;
   line-height: 1.4 !important;
   max-width: 400px !important;
@@ -226,7 +226,7 @@ const statistics = [
 .hero-button {
   transform: translateX(30%) !important;
   position: relative;
-  z-index: 10;
+  z-index: 1;
 }
 
 /* 標題美化樣式 */
