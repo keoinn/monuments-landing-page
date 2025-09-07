@@ -8,7 +8,7 @@
     <v-container class="d-flex align-center" style="min-width: 0; flex-wrap: nowrap;">
       <!-- Logo -->
       <v-toolbar-title class="text-h3 font-weight-black header-title" style="white-space: nowrap; overflow: visible; padding-right: 20px;">
-        <router-link :to="/" class="header-logo-link">
+        <router-link class="header-logo-link" :to="baseURL">
           青錢萬選
         </router-link>
       </v-toolbar-title>
@@ -67,7 +67,7 @@ import { ref } from 'vue'
 const drawer = ref(false)
 
 // 讀取環境變數中的 baseURL
-const baseURL = import.meta.env.VITE_DEPLOY_URL || '/'
+const baseURL = '/'
 
 const navItems = [
   { name: '首頁', to: '/' },
