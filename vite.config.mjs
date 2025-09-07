@@ -7,6 +7,7 @@ import Vue from '@vitejs/plugin-vue'
 import VueRouter from 'unplugin-vue-router/vite'
 import { VueRouterAutoImports } from 'unplugin-vue-router'
 import Vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
+import { createHtmlPlugin } from 'vite-plugin-html'
 
 // Utilities
 import { defineConfig } from 'vite'
@@ -54,6 +55,21 @@ export default defineConfig({
       },
       vueTemplate: true,
     }),
+    createHtmlPlugin({
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeAttributeQuotes: false,
+        collapseBooleanAttributes: true,
+        removeScriptTypeAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+      },
+      inject: {
+        data: {
+          title: '青錢萬選 - 萬選居',
+        },
+      },
+    }),
   ],
   optimizeDeps: {
     exclude: [
@@ -91,5 +107,30 @@ export default defineConfig({
         api: 'modern-compiler',
       },
     },
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: undefined,
+        assetFileNames: (assetInfo) => {
+          const info = assetInfo.name.split('.')
+          const ext = info[info.length - 1]
+          if (/\.(css)$/.test(assetInfo.name)) {
+            return `assets/css/[name]-[hash][extname]`
+          }
+          if (/\.(png|jpe?g|svg|gif|tiff|bmp|ico)$/i.test(assetInfo.name)) {
+            return `assets/images/[name]-[hash][extname]`
+          }
+          if (/\.(woff2?|eot|ttf|otf)$/i.test(assetInfo.name)) {
+            return `assets/fonts/[name]-[hash][extname]`
+          }
+          return `assets/[name]-[hash][extname]`
+        },
+        chunkFileNames: 'assets/js/[name]-[hash].js',
+        entryFileNames: 'assets/js/[name]-[hash].js',
+      },
+    },
+    assetsInlineLimit: 0,
+    cssCodeSplit: true,
   },
 })

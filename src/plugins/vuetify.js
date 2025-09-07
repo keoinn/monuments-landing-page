@@ -29,4 +29,12 @@ export default createVuetify({
       },
     },
   },
+  icons: {
+    defaultSet: 'mdi',
+    sets: {
+      mdi: {
+        component: 'mdi',
+      },
+    },
+  },
 })
