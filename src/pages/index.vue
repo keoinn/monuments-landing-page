@@ -120,8 +120,9 @@
 
 <script setup>
 import { ref } from 'vue'
+import landingViewImage from '@/assets/img/landing-view.jpg'
 
-const monumentImage = ref('/S__45940821.jpg')
+const monumentImage = ref(landingViewImage)
 
 const features = [
   {
