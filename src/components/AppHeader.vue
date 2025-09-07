@@ -34,7 +34,7 @@
         icon
         @click="drawer = !drawer"
       >
-        <v-icon>mdi-menu</v-icon>
+        <v-icon icon="mdi-menu"></v-icon>
       </v-btn>
     </v-container>
 

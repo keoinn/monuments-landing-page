@@ -5,13 +5,14 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node scripts/fix-preload.js",
+    "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint . --fix"
   },
   "dependencies": {
     "@fontsource/roboto": "5.2.6",
     "@mdi/font": "7.4.47",
+    "@mdi/js": "^7.4.47",
     "pinia": "^3.0.3",
     "vue": "^3.5.17",
     "vuetify": "^3.9.1"

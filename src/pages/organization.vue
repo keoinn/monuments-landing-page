@@ -37,7 +37,7 @@
                     rounded="lg"
                   >
                     <v-card-text class="pa-4">
-                      <v-icon size="32" color="white" class="mb-2">mdi-account-tie</v-icon>
+                      <v-icon size="32" color="white" class="mb-2" icon="mdi-account-tie"></v-icon>
                       <div class="text-h6 font-weight-bold text-white">理事長</div>
                       <div class="text-body-2 text-white">張文華</div>
                     </v-card-text>
@@ -55,7 +55,7 @@
                         rounded="lg"
                       >
                         <v-card-text class="pa-4">
-                          <v-icon size="28" color="white" class="mb-2">mdi-account-tie-outline</v-icon>
+                          <v-icon size="28" color="white" class="mb-2" icon="mdi-account-tie-outline"></v-icon>
                           <div class="text-h6 font-weight-bold text-white">副理事長</div>
                           <div class="text-body-2 text-white">李美玲</div>
                         </v-card-text>

@@ -120,6 +120,7 @@
 
 <script setup>
 import { ref } from 'vue'
+import landingViewImage from '@/assets/img/landing-view.webp'
 
 const timelineEvents = [
   {
@@ -128,7 +129,7 @@ const timelineEvents = [
     description: '這座古蹟始建於清朝道光年間，最初作為地方官員的辦公場所，見證了當時的政治與社會變遷。建築風格融合了傳統中式建築與當時的時代特色。',
     icon: 'mdi-home',
     color: 'primary',
-    image: '/S__45940821.jpg'
+    image: landingViewImage
   },
   {
     year: '1895',

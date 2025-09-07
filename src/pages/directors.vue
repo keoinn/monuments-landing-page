@@ -254,13 +254,14 @@
 
 <script setup>
 import { ref } from 'vue'
+import landingViewImage from '@/assets/img/landing-view.webp'
 
 const boardMembers = [
   {
     name: '張文華',
     title: '理事長',
     role: '理事長',
-    photo: '/S__45940821.jpg',
+    photo: landingViewImage,
     description: '致力於古蹟保護與文化傳承，擁有豐富的歷史建築修復經驗。',
     education: '國立台灣大學建築與城鄉研究所博士',
     expertise: ['古蹟修復', '建築史', '文化政策'],
@@ -276,7 +277,7 @@ const boardMembers = [
     name: '李美玲',
     title: '副理事長',
     role: '副理事長',
-    photo: '/S__45940821.jpg',
+    photo: landingViewImage,
     description: '專精於文化資產管理與教育推廣，推動古蹟活化再利用。',
     education: '國立政治大學歷史學系碩士',
     expertise: ['文化資產', '教育推廣', '博物館學'],
@@ -292,7 +293,7 @@ const boardMembers = [
     name: '陳志明',
     title: '常務理事',
     role: '常務理事',
-    photo: '/S__45940821.jpg',
+    photo: landingViewImage,
     description: '建築工程專家，專精於古蹟結構安全評估與修復技術。',
     education: '國立成功大學建築學系學士',
     expertise: ['結構工程', '古蹟修復', '工程管理'],
@@ -308,7 +309,7 @@ const boardMembers = [
     name: '林雅婷',
     title: '常務理事',
     role: '常務理事',
-    photo: '/S__45940821.jpg',
+    photo: landingViewImage,
     description: '文化創意產業專家，致力於古蹟文化價值推廣與創新應用。',
     education: '國立台灣藝術大學文化創意產業學系碩士',
     expertise: ['文化創意', '行銷推廣', '活動企劃'],
@@ -324,7 +325,7 @@ const boardMembers = [
     name: '黃文博',
     title: '理事',
     role: '理事',
-    photo: '/S__45940821.jpg',
+    photo: landingViewImage,
     description: '歷史學者，專精於台灣史研究與文獻整理，為古蹟歷史研究提供學術支持。',
     education: '國立台灣大學歷史學系博士',
     expertise: ['台灣史', '文獻研究', '口述歷史'],
@@ -340,7 +341,7 @@ const boardMembers = [
     name: '劉美惠',
     title: '理事',
     role: '理事',
-    photo: '/S__45940821.jpg',
+    photo: landingViewImage,
     description: '財務管理專家，負責古蹟管理處的財務規劃與預算管理。',
     education: '國立政治大學會計學系碩士',
     expertise: ['財務管理', '會計', '預算規劃'],
