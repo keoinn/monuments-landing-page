@@ -216,6 +216,10 @@ const statistics = [
   transform: translateX(15%) !important;
   position: relative;
   z-index: 10;
+  white-space: normal !important;
+  line-height: 1.4 !important;
+  max-width: 400px !important;
+  text-align: center !important;
 }
 
 /* 按鈕樣式 */
@@ -283,6 +287,96 @@ const statistics = [
 }
 
 /* 響應式標題調整 */
+@media (min-width: 960px) {
+  .hero-content-container {
+    transform: translateY(-25%) translateX(-10%) !important;
+  }
+  
+  .hero-description {
+    transform: translateX(25%) !important;
+    white-space: normal !important;
+    line-height: 1.4 !important;
+    max-width: 400px !important;
+    text-align: center !important;
+  }
+  
+  .hero-button {
+    transform: translateX(40%) !important;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 959px) {
+  .hero-content-container {
+    transform: translateY(-25%) translateX(0%) !important;
+  }
+  
+  .hero-description {
+    transform: translateX(0%) !important;
+    white-space: normal !important;
+    line-height: 1.4 !important;
+    max-width: 350px !important;
+    text-align: center !important;
+  }
+  
+  .hero-button {
+    transform: translateX(0%) !important;
+  }
+}
+
+@media (min-width: 480px) and (max-width: 768px) {
+  .hero-content-container {
+    transform: translateY(-25%) translateX(0%) !important;
+  }
+  
+  .hero-description {
+    transform: translateX(0%) !important;
+    white-space: normal !important;
+    line-height: 1.4 !important;
+    max-width: 300px !important;
+    text-align: center !important;
+  }
+  
+  .hero-button {
+    transform: translateX(0%) !important;
+  }
+}
+
+@media (min-width: 363px) and (max-width: 479px) {
+  .hero-content-container {
+    transform: translateY(-25%) translateX(0%) !important;
+  }
+  
+  .hero-description {
+    transform: translateX(0%) !important;
+    white-space: normal !important;
+    line-height: 1.4 !important;
+    max-width: 280px !important;
+    text-align: center !important;
+  }
+  
+  .hero-button {
+    transform: translateX(0%) !important;
+  }
+}
+
+@media (max-width: 362px) {
+  .hero-content-container {
+    transform: translateY(-25%) translateX(0%) !important;
+  }
+  
+  .hero-description {
+    transform: translateX(0%) !important;
+    white-space: normal !important;
+    line-height: 1.4 !important;
+    max-width: 250px !important;
+    text-align: center !important;
+  }
+  
+  .hero-button {
+    transform: translateX(0%) !important;
+  }
+}
+
 @media (max-width: 768px) {
   .hero-title {
     padding: 20px 35px;
