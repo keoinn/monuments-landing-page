@@ -1,9 +1,199 @@
+<script setup>
+  const quickStats = [
+    {
+      title: '待辦事項',
+      value: '12',
+      icon: 'mdi-clipboard-list',
+      color: 'primary',
+    },
+    {
+      title: '本月公告',
+      value: '8',
+      icon: 'mdi-bullhorn',
+      color: 'success',
+    },
+    {
+      title: '處理中案件',
+      value: '25',
+      icon: 'mdi-cog',
+      color: 'info',
+    },
+    {
+      title: '已完成',
+      value: '156',
+      icon: 'mdi-check-circle',
+      color: 'warning',
+    },
+  ]
+
+  const publicAffairsCategories = [
+    {
+      title: '法規政策',
+      description: '古蹟保護相關法規與政策文件',
+      icon: 'mdi-gavel',
+      color: 'primary',
+      items: [
+        '文化資產保存法',
+        '古蹟修復準則',
+        '管理辦法',
+        '申請表格',
+      ],
+    },
+    {
+      title: '預算財務',
+      description: '年度預算與財務報告',
+      icon: 'mdi-calculator',
+      color: 'success',
+      items: [
+        '年度預算書',
+        '財務報表',
+        '採購公告',
+        '決標結果',
+      ],
+    },
+    {
+      title: '人事管理',
+      description: '人事相關公告與規定',
+      icon: 'mdi-account-group',
+      color: 'info',
+      items: [
+        '職缺公告',
+        '人事異動',
+        '考核辦法',
+        '福利制度',
+      ],
+    },
+    {
+      title: '工程維護',
+      description: '古蹟維護工程相關資訊',
+      icon: 'mdi-hammer-wrench',
+      color: 'warning',
+      items: [
+        '工程招標',
+        '施工公告',
+        '安全檢查',
+        '修復報告',
+      ],
+    },
+    {
+      title: '教育推廣',
+      description: '教育活動與推廣計畫',
+      icon: 'mdi-school',
+      color: 'error',
+      items: [
+        '導覽活動',
+        '教育課程',
+        '文化講座',
+        '志工招募',
+      ],
+    },
+    {
+      title: '研究報告',
+      description: '學術研究與調查報告',
+      icon: 'mdi-book-search',
+      color: 'purple',
+      items: [
+        '歷史研究',
+        '調查報告',
+        '學術論文',
+        '文獻整理',
+      ],
+    },
+  ]
+
+  const recentDocuments = [
+    {
+      title: '2024年度古蹟維護計畫',
+      description: '詳細說明本年度古蹟維護工作的規劃與執行方式',
+      date: '2024-01-15',
+      author: '維護部',
+      type: 'PDF',
+      icon: 'mdi-file-document',
+      color: 'primary',
+      url: '#',
+    },
+    {
+      title: '古蹟參觀導覽服務公告',
+      description: '提供專業導覽服務，歡迎民眾預約參觀',
+      date: '2024-01-12',
+      author: '教育推廣部',
+      type: 'DOC',
+      icon: 'mdi-bullhorn',
+      color: 'success',
+      url: '#',
+    },
+    {
+      title: '古蹟修復工程招標公告',
+      description: '公開招標古蹟修復工程，歡迎合格廠商投標',
+      date: '2024-01-10',
+      author: '工程部',
+      type: 'PDF',
+      icon: 'mdi-hammer-wrench',
+      color: 'warning',
+      url: '#',
+    },
+    {
+      title: '古蹟管理處人事異動公告',
+      description: '公告最新人事異動情況與職務調整',
+      date: '2024-01-08',
+      author: '人事部',
+      type: 'DOC',
+      icon: 'mdi-account-group',
+      color: 'info',
+      url: '#',
+    },
+    {
+      title: '古蹟歷史研究報告',
+      description: '最新完成的古蹟歷史研究與文獻整理報告',
+      date: '2024-01-05',
+      author: '研究部',
+      type: 'PDF',
+      icon: 'mdi-book-search',
+      color: 'purple',
+      url: '#',
+    },
+  ]
+
+  const contactInfo = [
+    {
+      title: '總機電話',
+      description: '古蹟管理處總機',
+      value: '02-1234-5678',
+      icon: 'mdi-phone',
+      color: 'primary',
+      action: 'tel:02-1234-5678',
+      buttonText: '撥打電話',
+    },
+    {
+      title: '電子信箱',
+      description: '公務信箱',
+      value: 'info@monument.gov.tw',
+      icon: 'mdi-email',
+      color: 'success',
+      action: 'mailto:info@monument.gov.tw',
+      buttonText: '發送郵件',
+    },
+    {
+      title: '地址',
+      description: '古蹟管理處地址',
+      value: '台北市中正區重慶南路一段122號',
+      icon: 'mdi-map-marker',
+      color: 'info',
+      action: 'https://maps.google.com',
+      buttonText: '查看地圖',
+    },
+  ]
+</script>
 <template>
   <div>
     <!-- Page Header -->
     <v-container class="py-12">
       <v-row justify="center">
-        <v-col cols="12" md="8" class="text-center">
+        <v-col
+          class="text-center"
+          cols="12"
+          md="8"
+        >
           <h1 class="text-h2 text-md-h1 font-weight-bold mb-4">公務資訊</h1>
           <p class="text-h6 text-medium-emphasis">
             古蹟管理處的公務公告與重要資訊
@@ -22,16 +212,16 @@
           md="3"
         >
           <v-card
-            :color="stat.color"
             class="text-center"
+            :color="stat.color"
             rounded="lg"
           >
             <v-card-text class="pa-4">
               <v-icon
+                class="mb-2"
+                color="white"
                 :icon="stat.icon"
                 size="32"
-                color="white"
-                class="mb-2"
               />
               <div class="text-h4 font-weight-bold text-white mb-1">
                 {{ stat.value }}
@@ -48,7 +238,10 @@
     <!-- Public Affairs Categories -->
     <v-container class="pb-16">
       <v-row>
-        <v-col cols="12" class="text-center mb-8">
+        <v-col
+          class="text-center mb-8"
+          cols="12"
+        >
           <h2 class="text-h3 font-weight-bold mb-4">公務分類</h2>
           <p class="text-h6 text-medium-emphasis">
             各類公務資訊與服務項目
@@ -60,24 +253,24 @@
         <v-col
           v-for="category in publicAffairsCategories"
           :key="category.title"
-          cols="12"
-          md="6"
-          lg="4"
           class="mb-6"
+          cols="12"
+          lg="4"
+          md="6"
         >
           <v-card
             class="h-100"
             elevation="2"
-            rounded="lg"
             hover
+            rounded="lg"
           >
             <v-card-text class="pa-6">
               <div class="d-flex align-center mb-4">
                 <v-icon
-                  :icon="category.icon"
-                  :color="category.color"
-                  size="32"
                   class="mr-3"
+                  :color="category.color"
+                  :icon="category.icon"
+                  size="32"
                 />
                 <h3 class="text-h5 font-weight-bold">
                   {{ category.title }}
@@ -94,8 +287,8 @@
                 >
                   <template #prepend>
                     <v-icon
-                      icon="mdi-check-circle"
                       :color="category.color"
+                      icon="mdi-check-circle"
                       size="16"
                     />
                   </template>
@@ -107,10 +300,10 @@
             </v-card-text>
             <v-card-actions class="pa-6 pt-0">
               <v-btn
-                :color="category.color"
-                variant="outlined"
-                rounded
                 block
+                :color="category.color"
+                rounded
+                variant="outlined"
               >
                 查看詳情
               </v-btn>
@@ -121,10 +314,17 @@
     </v-container>
 
     <!-- Recent Documents -->
-    <v-container fluid class="py-16" color="surface-variant">
+    <v-container
+      class="py-16"
+      color="surface-variant"
+      fluid
+    >
       <v-container>
         <v-row>
-          <v-col cols="12" class="text-center mb-8">
+          <v-col
+            class="text-center mb-8"
+            cols="12"
+          >
             <h2 class="text-h3 font-weight-bold mb-4">最新文件</h2>
             <p class="text-h6 text-medium-emphasis">
               最近發布的重要文件與公告
@@ -144,8 +344,8 @@
                   >
                     <template #prepend>
                       <v-icon
-                        :icon="document.icon"
                         :color="document.color"
+                        :icon="document.icon"
                         size="24"
                       />
                     </template>
@@ -159,22 +359,34 @@
                     </v-list-item-subtitle>
 
                     <div class="d-flex align-center text-caption text-medium-emphasis">
-                      <v-icon icon="mdi-calendar" size="14" class="mr-1" />
+                      <v-icon
+                        class="mr-1"
+                        icon="mdi-calendar"
+                        size="14"
+                      />
                       {{ document.date }}
-                      <v-icon icon="mdi-account" size="14" class="mr-1 ml-3" />
+                      <v-icon
+                        class="mr-1 ml-3"
+                        icon="mdi-account"
+                        size="14"
+                      />
                       {{ document.author }}
-                      <v-icon icon="mdi-file-document" size="14" class="mr-1 ml-3" />
+                      <v-icon
+                        class="mr-1 ml-3"
+                        icon="mdi-file-document"
+                        size="14"
+                      />
                       {{ document.type }}
                     </div>
 
                     <template #append>
                       <v-btn
-                        :href="document.url"
-                        target="_blank"
                         color="primary"
-                        variant="text"
-                        size="small"
+                        :href="document.url"
                         prepend-icon="mdi-download"
+                        size="small"
+                        target="_blank"
+                        variant="text"
                       >
                         下載
                       </v-btn>
@@ -191,7 +403,10 @@
     <!-- Contact Information -->
     <v-container class="py-16">
       <v-row>
-        <v-col cols="12" class="text-center mb-8">
+        <v-col
+          class="text-center mb-8"
+          cols="12"
+        >
           <h2 class="text-h3 font-weight-bold mb-4">聯絡資訊</h2>
           <p class="text-h6 text-medium-emphasis">
             如有公務相關問題，歡迎與我們聯繫
@@ -203,9 +418,9 @@
         <v-col
           v-for="contact in contactInfo"
           :key="contact.title"
+          class="mb-6"
           cols="12"
           md="4"
-          class="mb-6"
         >
           <v-card
             class="h-100"
@@ -214,10 +429,10 @@
           >
             <v-card-text class="pa-6 text-center">
               <v-icon
-                :icon="contact.icon"
-                :color="contact.color"
-                size="48"
                 class="mb-4"
+                :color="contact.color"
+                :icon="contact.icon"
+                size="48"
               />
               <h3 class="text-h5 font-weight-bold mb-3">
                 {{ contact.title }}
@@ -229,11 +444,11 @@
                 {{ contact.value }}
               </div>
               <v-btn
-                :href="contact.action"
                 :color="contact.color"
-                variant="outlined"
+                :href="contact.action"
                 rounded
                 size="small"
+                variant="outlined"
               >
                 {{ contact.buttonText }}
               </v-btn>
@@ -244,193 +459,3 @@
     </v-container>
   </div>
 </template>
-
-<script setup>
-import { ref } from 'vue'
-
-const quickStats = [
-  {
-    title: '待辦事項',
-    value: '12',
-    icon: 'mdi-clipboard-list',
-    color: 'primary'
-  },
-  {
-    title: '本月公告',
-    value: '8',
-    icon: 'mdi-bullhorn',
-    color: 'success'
-  },
-  {
-    title: '處理中案件',
-    value: '25',
-    icon: 'mdi-cog',
-    color: 'info'
-  },
-  {
-    title: '已完成',
-    value: '156',
-    icon: 'mdi-check-circle',
-    color: 'warning'
-  }
-]
-
-const publicAffairsCategories = [
-  {
-    title: '法規政策',
-    description: '古蹟保護相關法規與政策文件',
-    icon: 'mdi-gavel',
-    color: 'primary',
-    items: [
-      '文化資產保存法',
-      '古蹟修復準則',
-      '管理辦法',
-      '申請表格'
-    ]
-  },
-  {
-    title: '預算財務',
-    description: '年度預算與財務報告',
-    icon: 'mdi-calculator',
-    color: 'success',
-    items: [
-      '年度預算書',
-      '財務報表',
-      '採購公告',
-      '決標結果'
-    ]
-  },
-  {
-    title: '人事管理',
-    description: '人事相關公告與規定',
-    icon: 'mdi-account-group',
-    color: 'info',
-    items: [
-      '職缺公告',
-      '人事異動',
-      '考核辦法',
-      '福利制度'
-    ]
-  },
-  {
-    title: '工程維護',
-    description: '古蹟維護工程相關資訊',
-    icon: 'mdi-hammer-wrench',
-    color: 'warning',
-    items: [
-      '工程招標',
-      '施工公告',
-      '安全檢查',
-      '修復報告'
-    ]
-  },
-  {
-    title: '教育推廣',
-    description: '教育活動與推廣計畫',
-    icon: 'mdi-school',
-    color: 'error',
-    items: [
-      '導覽活動',
-      '教育課程',
-      '文化講座',
-      '志工招募'
-    ]
-  },
-  {
-    title: '研究報告',
-    description: '學術研究與調查報告',
-    icon: 'mdi-book-search',
-    color: 'purple',
-    items: [
-      '歷史研究',
-      '調查報告',
-      '學術論文',
-      '文獻整理'
-    ]
-  }
-]
-
-const recentDocuments = [
-  {
-    title: '2024年度古蹟維護計畫',
-    description: '詳細說明本年度古蹟維護工作的規劃與執行方式',
-    date: '2024-01-15',
-    author: '維護部',
-    type: 'PDF',
-    icon: 'mdi-file-document',
-    color: 'primary',
-    url: '#'
-  },
-  {
-    title: '古蹟參觀導覽服務公告',
-    description: '提供專業導覽服務，歡迎民眾預約參觀',
-    date: '2024-01-12',
-    author: '教育推廣部',
-    type: 'DOC',
-    icon: 'mdi-bullhorn',
-    color: 'success',
-    url: '#'
-  },
-  {
-    title: '古蹟修復工程招標公告',
-    description: '公開招標古蹟修復工程，歡迎合格廠商投標',
-    date: '2024-01-10',
-    author: '工程部',
-    type: 'PDF',
-    icon: 'mdi-hammer-wrench',
-    color: 'warning',
-    url: '#'
-  },
-  {
-    title: '古蹟管理處人事異動公告',
-    description: '公告最新人事異動情況與職務調整',
-    date: '2024-01-08',
-    author: '人事部',
-    type: 'DOC',
-    icon: 'mdi-account-group',
-    color: 'info',
-    url: '#'
-  },
-  {
-    title: '古蹟歷史研究報告',
-    description: '最新完成的古蹟歷史研究與文獻整理報告',
-    date: '2024-01-05',
-    author: '研究部',
-    type: 'PDF',
-    icon: 'mdi-book-search',
-    color: 'purple',
-    url: '#'
-  }
-]
-
-const contactInfo = [
-  {
-    title: '總機電話',
-    description: '古蹟管理處總機',
-    value: '02-1234-5678',
-    icon: 'mdi-phone',
-    color: 'primary',
-    action: 'tel:02-1234-5678',
-    buttonText: '撥打電話'
-  },
-  {
-    title: '電子信箱',
-    description: '公務信箱',
-    value: 'info@monument.gov.tw',
-    icon: 'mdi-email',
-    color: 'success',
-    action: 'mailto:info@monument.gov.tw',
-    buttonText: '發送郵件'
-  },
-  {
-    title: '地址',
-    description: '古蹟管理處地址',
-    value: '台北市中正區重慶南路一段122號',
-    icon: 'mdi-map-marker',
-    color: 'info',
-    action: 'https://maps.google.com',
-    buttonText: '查看地圖'
-  }
-]
-</script>
-

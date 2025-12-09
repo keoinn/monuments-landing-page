@@ -1,9 +1,113 @@
+<script setup>
+  const departments = [
+    {
+      name: '行政部',
+      manager: '王建國',
+      description: '負責古蹟管理處的日常行政事務與人事管理',
+      icon: 'mdi-office-building',
+      color: 'primary',
+      phone: '02-1234-5678',
+      email: 'admin@monument.gov.tw',
+      responsibilities: [
+        '人事管理與員工培訓',
+        '財務預算編列與執行',
+        '文書處理與檔案管理',
+        '對外聯絡與協調',
+        '會議安排與記錄',
+      ],
+    },
+    {
+      name: '維護部',
+      manager: '陳志明',
+      description: '負責古蹟的日常維護與修復工作',
+      icon: 'mdi-hammer-wrench',
+      color: 'success',
+      phone: '02-1234-5679',
+      email: 'maintenance@monument.gov.tw',
+      responsibilities: [
+        '古蹟結構安全檢查',
+        '日常清潔與保養',
+        '修復工程規劃與執行',
+        '設備維護與更新',
+        '安全監控系統管理',
+      ],
+    },
+    {
+      name: '教育推廣部',
+      manager: '林雅婷',
+      description: '負責古蹟的教育推廣與文化活動',
+      icon: 'mdi-school',
+      color: 'info',
+      phone: '02-1234-5680',
+      email: 'education@monument.gov.tw',
+      responsibilities: [
+        '導覽服務與解說',
+        '教育活動規劃與執行',
+        '文化推廣活動',
+        '志工培訓與管理',
+        '文宣品製作與發行',
+      ],
+    },
+    {
+      name: '研究部',
+      manager: '黃文博',
+      description: '負責古蹟的學術研究與文獻整理',
+      icon: 'mdi-book-search',
+      color: 'warning',
+      phone: '02-1234-5681',
+      email: 'research@monument.gov.tw',
+      responsibilities: [
+        '古蹟歷史研究',
+        '文獻資料整理',
+        '學術論文發表',
+        '國際交流合作',
+        '數位典藏建置',
+      ],
+    },
+    {
+      name: '財務部',
+      manager: '劉美惠',
+      description: '負責古蹟管理處的財務管理與會計事務',
+      icon: 'mdi-calculator',
+      color: 'error',
+      phone: '02-1234-5682',
+      email: 'finance@monument.gov.tw',
+      responsibilities: [
+        '預算編列與執行',
+        '會計帳務處理',
+        '財務報表製作',
+        '採購管理',
+        '成本控制與分析',
+      ],
+    },
+    {
+      name: '資訊部',
+      manager: '張志強',
+      description: '負責古蹟管理處的資訊系統與數位化服務',
+      icon: 'mdi-laptop',
+      color: 'purple',
+      phone: '02-1234-5683',
+      email: 'it@monument.gov.tw',
+      responsibilities: [
+        '資訊系統維護',
+        '網站管理與更新',
+        '數位化服務開發',
+        '網路安全維護',
+        '技術支援服務',
+      ],
+    },
+  ]
+</script>
 <template>
   <div>
     <!-- Page Header -->
     <v-container class="py-12">
       <v-row justify="center">
-        <v-col cols="12" md="8" class="text-center">
+        <v-col
+          class="text-center"
+          cols="12"
+          md="8"
+        >
           <h1 class="text-h2 text-md-h1 font-weight-bold mb-4">組織架構</h1>
           <p class="text-h6 text-medium-emphasis">
             了解古蹟管理組織的結構與運作方式
@@ -15,7 +119,10 @@
     <!-- Organization Chart -->
     <v-container class="pb-16">
       <v-row>
-        <v-col cols="12" class="text-center mb-8">
+        <v-col
+          class="text-center mb-8"
+          cols="12"
+        >
           <h2 class="text-h3 font-weight-bold mb-4">組織架構圖</h2>
           <p class="text-h6 text-medium-emphasis">
             古蹟管理處的完整組織架構與職責分工
@@ -31,13 +138,18 @@
                 <!-- 理事長 -->
                 <div class="org-level-1 text-center mb-6">
                   <v-card
-                    color="primary"
                     class="mx-auto"
-                    style="max-width: 300px;"
+                    color="primary"
                     rounded="lg"
+                    style="max-width: 300px;"
                   >
                     <v-card-text class="pa-4">
-                      <v-icon size="32" color="white" class="mb-2" icon="mdi-account-tie"></v-icon>
+                      <v-icon
+                        class="mb-2"
+                        color="white"
+                        icon="mdi-account-tie"
+                        size="32"
+                      />
                       <div class="text-h6 font-weight-bold text-white">理事長</div>
                       <div class="text-body-2 text-white">張文華</div>
                     </v-card-text>
@@ -49,13 +161,18 @@
                   <v-row justify="center">
                     <v-col cols="12" md="6">
                       <v-card
-                        color="success"
                         class="mx-auto"
-                        style="max-width: 250px;"
+                        color="success"
                         rounded="lg"
+                        style="max-width: 250px;"
                       >
                         <v-card-text class="pa-4">
-                          <v-icon size="28" color="white" class="mb-2" icon="mdi-account-tie-outline"></v-icon>
+                          <v-icon
+                            class="mb-2"
+                            color="white"
+                            icon="mdi-account-tie-outline"
+                            size="28"
+                          />
                           <div class="text-h6 font-weight-bold text-white">副理事長</div>
                           <div class="text-body-2 text-white">李美玲</div>
                         </v-card-text>
@@ -70,21 +187,21 @@
                     <v-col
                       v-for="department in departments"
                       :key="department.name"
+                      class="mb-4"
                       cols="12"
                       md="4"
-                      class="mb-4"
                     >
                       <v-card
-                        :color="department.color"
                         class="h-100"
+                        :color="department.color"
                         rounded="lg"
                       >
                         <v-card-text class="pa-4 text-center">
                           <v-icon
+                            class="mb-2"
+                            color="white"
                             :icon="department.icon"
                             size="24"
-                            color="white"
-                            class="mb-2"
                           />
                           <div class="text-subtitle-1 font-weight-bold text-white mb-1">
                             {{ department.name }}
@@ -108,10 +225,17 @@
     </v-container>
 
     <!-- Department Details -->
-    <v-container fluid class="py-16" color="surface-variant">
+    <v-container
+      class="py-16"
+      color="surface-variant"
+      fluid
+    >
       <v-container>
         <v-row>
-          <v-col cols="12" class="text-center mb-8">
+          <v-col
+            class="text-center mb-8"
+            cols="12"
+          >
             <h2 class="text-h3 font-weight-bold mb-4">部門職責</h2>
             <p class="text-h6 text-medium-emphasis">
               各部門的詳細職責與工作內容
@@ -120,13 +244,13 @@
         </v-row>
 
         <v-row>
-                    <v-col
-                      v-for="department in departments"
-                      :key="department.name"
-                      cols="12"
-                      md="6"
-                      class="mb-6"
-                    >
+          <v-col
+            v-for="department in departments"
+            :key="department.name"
+            class="mb-6"
+            cols="12"
+            md="6"
+          >
             <v-card
               class="h-100"
               elevation="2"
@@ -135,10 +259,10 @@
               <v-card-text class="pa-6">
                 <div class="d-flex align-center mb-4">
                   <v-icon
-                    :icon="department.icon"
-                    :color="department.color"
-                    size="32"
                     class="mr-3"
+                    :color="department.color"
+                    :icon="department.icon"
+                    size="32"
                   />
                   <h3 class="text-h5 font-weight-bold">
                     {{ department.name }}
@@ -157,8 +281,8 @@
                     >
                       <template #prepend>
                         <v-icon
-                          icon="mdi-check-circle"
                           :color="department.color"
+                          icon="mdi-check-circle"
                           size="16"
                         />
                       </template>
@@ -172,15 +296,27 @@
                   <h4 class="text-subtitle-1 font-weight-bold mb-2">聯絡方式：</h4>
                   <div class="text-body-2">
                     <div class="mb-1">
-                      <v-icon icon="mdi-account" size="16" class="mr-2" />
+                      <v-icon
+                        class="mr-2"
+                        icon="mdi-account"
+                        size="16"
+                      />
                       負責人：{{ department.manager }}
                     </div>
                     <div class="mb-1">
-                      <v-icon icon="mdi-phone" size="16" class="mr-2" />
+                      <v-icon
+                        class="mr-2"
+                        icon="mdi-phone"
+                        size="16"
+                      />
                       電話：{{ department.phone }}
                     </div>
                     <div>
-                      <v-icon icon="mdi-email" size="16" class="mr-2" />
+                      <v-icon
+                        class="mr-2"
+                        icon="mdi-email"
+                        size="16"
+                      />
                       信箱：{{ department.email }}
                     </div>
                   </div>
@@ -193,110 +329,6 @@
     </v-container>
   </div>
 </template>
-
-<script setup>
-import { ref } from 'vue'
-
-const departments = [
-  {
-    name: '行政部',
-    manager: '王建國',
-    description: '負責古蹟管理處的日常行政事務與人事管理',
-    icon: 'mdi-office-building',
-    color: 'primary',
-    phone: '02-1234-5678',
-    email: 'admin@monument.gov.tw',
-    responsibilities: [
-      '人事管理與員工培訓',
-      '財務預算編列與執行',
-      '文書處理與檔案管理',
-      '對外聯絡與協調',
-      '會議安排與記錄'
-    ]
-  },
-  {
-    name: '維護部',
-    manager: '陳志明',
-    description: '負責古蹟的日常維護與修復工作',
-    icon: 'mdi-hammer-wrench',
-    color: 'success',
-    phone: '02-1234-5679',
-    email: 'maintenance@monument.gov.tw',
-    responsibilities: [
-      '古蹟結構安全檢查',
-      '日常清潔與保養',
-      '修復工程規劃與執行',
-      '設備維護與更新',
-      '安全監控系統管理'
-    ]
-  },
-  {
-    name: '教育推廣部',
-    manager: '林雅婷',
-    description: '負責古蹟的教育推廣與文化活動',
-    icon: 'mdi-school',
-    color: 'info',
-    phone: '02-1234-5680',
-    email: 'education@monument.gov.tw',
-    responsibilities: [
-      '導覽服務與解說',
-      '教育活動規劃與執行',
-      '文化推廣活動',
-      '志工培訓與管理',
-      '文宣品製作與發行'
-    ]
-  },
-  {
-    name: '研究部',
-    manager: '黃文博',
-    description: '負責古蹟的學術研究與文獻整理',
-    icon: 'mdi-book-search',
-    color: 'warning',
-    phone: '02-1234-5681',
-    email: 'research@monument.gov.tw',
-    responsibilities: [
-      '古蹟歷史研究',
-      '文獻資料整理',
-      '學術論文發表',
-      '國際交流合作',
-      '數位典藏建置'
-    ]
-  },
-  {
-    name: '財務部',
-    manager: '劉美惠',
-    description: '負責古蹟管理處的財務管理與會計事務',
-    icon: 'mdi-calculator',
-    color: 'error',
-    phone: '02-1234-5682',
-    email: 'finance@monument.gov.tw',
-    responsibilities: [
-      '預算編列與執行',
-      '會計帳務處理',
-      '財務報表製作',
-      '採購管理',
-      '成本控制與分析'
-    ]
-  },
-  {
-    name: '資訊部',
-    manager: '張志強',
-    description: '負責古蹟管理處的資訊系統與數位化服務',
-    icon: 'mdi-laptop',
-    color: 'purple',
-    phone: '02-1234-5683',
-    email: 'it@monument.gov.tw',
-    responsibilities: [
-      '資訊系統維護',
-      '網站管理與更新',
-      '數位化服務開發',
-      '網路安全維護',
-      '技術支援服務'
-    ]
-  }
-]
-</script>
-
 <style scoped>
 .organization-chart {
   position: relative;

@@ -1,3 +1,21 @@
+<script setup>
+  import { ref } from 'vue'
+
+  const drawer = ref(false)
+
+  // 讀取環境變數中的 baseURL
+  const baseURL = '/'
+
+  const navItems = [
+    { name: '首頁', to: '/' },
+    { name: '沿革', to: '/history' },
+    { name: '組織', to: '/organization' },
+    { name: '委員會', to: '/directors' },
+    { name: '公務', to: '/public-affairs' },
+    { name: '公告', to: '/announcements' },
+  ]
+</script>
+
 <template>
   <v-app-bar
     color="primary"
@@ -19,10 +37,10 @@
         <v-btn
           v-for="item in navItems"
           :key="item.name"
-          :to="item.to"
-          variant="text"
           class="mx-1 header-menu"
           size="large"
+          :to="item.to"
+          variant="text"
         >
           {{ item.name }}
         </v-btn>
@@ -34,25 +52,25 @@
         icon
         @click="drawer = !drawer"
       >
-        <v-icon icon="mdi-menu"></v-icon>
+        <v-icon icon="mdi-menu" />
       </v-btn>
     </v-container>
 
     <!-- Mobile Navigation Drawer -->
     <v-navigation-drawer
       v-model="drawer"
-      temporary
       location="right"
-      width="300"
       style="z-index: 1005 !important; height: 100vh !important;"
+      temporary
+      width="300"
     >
       <v-list class="pa-0" style="height: 100%;">
         <v-list-item
           v-for="item in navItems"
           :key="item.name"
+          class="py-4"
           :to="item.to"
           @click="drawer = false"
-          class="py-4"
         >
           <v-list-item-title class="header-menu-mobile">{{ item.name }}</v-list-item-title>
         </v-list-item>
@@ -60,24 +78,6 @@
     </v-navigation-drawer>
   </v-app-bar>
 </template>
-
-<script setup>
-import { ref } from 'vue'
-
-const drawer = ref(false)
-
-// 讀取環境變數中的 baseURL
-const baseURL = '/'
-
-const navItems = [
-  { name: '首頁', to: '/' },
-  { name: '沿革', to: '/history' },
-  { name: '組織', to: '/organization' },
-  { name: '理事公', to: '/directors' },
-  { name: '公務', to: '/public-affairs' },
-  { name: '公告', to: '/announcements' }
-]
-</script>
 
 <style scoped>
 /* Header 字體樣式 - 與 hero-title 保持一致 */
@@ -149,4 +149,3 @@ const navItems = [
   }
 }
 </style>
-

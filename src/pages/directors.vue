@@ -4,7 +4,7 @@
     <v-container class="py-12">
       <v-row justify="center">
         <v-col cols="12" md="8" class="text-center">
-          <h1 class="text-h2 text-md-h1 font-weight-bold mb-4">理事公</h1>
+          <h1 class="text-h2 text-md-h1 font-weight-bold mb-4">委員會</h1>
           <p class="text-h6 text-medium-emphasis">
             認識古蹟管理處的理事會成員與其專業背景
           </p>
