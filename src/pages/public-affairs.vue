@@ -1,190 +1,37 @@
 <script setup>
-  import landingViewImage from '@/assets/img/landing-view.webp'
+  import { onMounted, ref } from 'vue'
+  import { fetchPublicAffairsData } from '@/apis/mocks/publicAffairsApi'
 
-  const quickStats = [
-    {
-      title: '待辦事項',
-      value: '12',
-      icon: 'mdi-clipboard-list',
-      color: 'primary',
-    },
-    {
-      title: '本月公告',
-      value: '8',
-      icon: 'mdi-bullhorn',
-      color: 'success',
-    },
-    {
-      title: '處理中案件',
-      value: '25',
-      icon: 'mdi-cog',
-      color: 'info',
-    },
-    {
-      title: '已完成',
-      value: '156',
-      icon: 'mdi-check-circle',
-      color: 'warning',
-    },
-  ]
+  const quickStats = ref([])
+  const publicAffairsCategories = ref([])
+  const recentDocuments = ref([])
+  const contactInfo = ref([])
+  const loading = ref(false)
+  const error = ref(null)
 
-  const publicAffairsCategories = [
-    {
-      title: '法規政策',
-      description: '古蹟保護相關法規與政策文件',
-      icon: 'mdi-gavel',
-      color: 'primary',
-      items: [
-        '文化資產保存法',
-        '古蹟修復準則',
-        '管理辦法',
-        '申請表格',
-      ],
-    },
-    {
-      title: '預算財務',
-      description: '年度預算與財務報告',
-      icon: 'mdi-calculator',
-      color: 'success',
-      items: [
-        '年度預算書',
-        '財務報表',
-        '採購公告',
-        '決標結果',
-      ],
-    },
-    {
-      title: '人事管理',
-      description: '人事相關公告與規定',
-      icon: 'mdi-account-group',
-      color: 'info',
-      items: [
-        '職缺公告',
-        '人事異動',
-        '考核辦法',
-        '福利制度',
-      ],
-    },
-    {
-      title: '工程維護',
-      description: '古蹟維護工程相關資訊',
-      icon: 'mdi-hammer-wrench',
-      color: 'warning',
-      items: [
-        '工程招標',
-        '施工公告',
-        '安全檢查',
-        '修復報告',
-      ],
-    },
-    {
-      title: '教育推廣',
-      description: '教育活動與推廣計畫',
-      icon: 'mdi-school',
-      color: 'error',
-      items: [
-        '導覽活動',
-        '教育課程',
-        '文化講座',
-        '志工招募',
-      ],
-    },
-    {
-      title: '研究報告',
-      description: '學術研究與調查報告',
-      icon: 'mdi-book-search',
-      color: 'purple',
-      items: [
-        '歷史研究',
-        '調查報告',
-        '學術論文',
-        '文獻整理',
-      ],
-    },
-  ]
+  // 從 API 獲取公務資訊資料
+  async function loadPublicAffairsData () {
+    loading.value = true
+    error.value = null
 
-  const recentDocuments = [
-    {
-      title: '2024年度古蹟維護計畫',
-      description: '詳細說明本年度古蹟維護工作的規劃與執行方式',
-      date: '2024-01-15',
-      author: '維護部',
-      type: 'PDF',
-      icon: 'mdi-file-document',
-      color: 'primary',
-      url: '#',
-    },
-    {
-      title: '古蹟參觀導覽服務公告',
-      description: '提供專業導覽服務，歡迎民眾預約參觀',
-      date: '2024-01-12',
-      author: '教育推廣部',
-      type: 'DOC',
-      icon: 'mdi-bullhorn',
-      color: 'success',
-      url: '#',
-    },
-    {
-      title: '古蹟修復工程招標公告',
-      description: '公開招標古蹟修復工程，歡迎合格廠商投標',
-      date: '2024-01-10',
-      author: '工程部',
-      type: 'PDF',
-      icon: 'mdi-hammer-wrench',
-      color: 'warning',
-      url: '#',
-    },
-    {
-      title: '古蹟管理處人事異動公告',
-      description: '公告最新人事異動情況與職務調整',
-      date: '2024-01-08',
-      author: '人事部',
-      type: 'DOC',
-      icon: 'mdi-account-group',
-      color: 'info',
-      url: '#',
-    },
-    {
-      title: '古蹟歷史研究報告',
-      description: '最新完成的古蹟歷史研究與文獻整理報告',
-      date: '2024-01-05',
-      author: '研究部',
-      type: 'PDF',
-      icon: 'mdi-book-search',
-      color: 'purple',
-      url: '#',
-    },
-  ]
+    try {
+      const data = await fetchPublicAffairsData()
+      quickStats.value = data.quickStats
+      publicAffairsCategories.value = data.publicAffairsCategories
+      recentDocuments.value = data.recentDocuments
+      contactInfo.value = data.contactInfo
+    } catch (error_) {
+      error.value = error_.message || '載入資料時發生錯誤'
+      console.error('載入公務資訊資料失敗:', error_)
+    } finally {
+      loading.value = false
+    }
+  }
 
-  const contactInfo = [
-    {
-      title: '總機電話',
-      description: '古蹟管理處總機',
-      value: '02-1234-5678',
-      icon: 'mdi-phone',
-      color: 'primary',
-      action: 'tel:02-1234-5678',
-      buttonText: '撥打電話',
-    },
-    {
-      title: '電子信箱',
-      description: '公務信箱',
-      value: 'info@monument.gov.tw',
-      icon: 'mdi-email',
-      color: 'success',
-      action: 'mailto:info@monument.gov.tw',
-      buttonText: '發送郵件',
-    },
-    {
-      title: '地址',
-      description: '古蹟管理處地址',
-      value: '台北市中正區重慶南路一段122號',
-      icon: 'mdi-map-marker',
-      color: 'info',
-      action: 'https://maps.google.com',
-      buttonText: '查看地圖',
-    },
-  ]
+  // 元件掛載時載入資料
+  onMounted(() => {
+    loadPublicAffairsData()
+  })
 </script>
 <template>
   <div>
@@ -208,7 +55,48 @@
 
     <!-- Quick Stats -->
     <v-container class="pb-8">
-      <v-row>
+      <!-- Loading State -->
+      <v-row v-if="loading">
+        <v-col
+          class="text-center"
+          cols="12"
+        >
+          <v-progress-circular
+            color="primary"
+            indeterminate
+            size="64"
+          />
+          <p class="mt-4 text-body-1 text-medium-emphasis">
+            載入中...
+          </p>
+        </v-col>
+      </v-row>
+
+      <!-- Error State -->
+      <v-row v-else-if="error">
+        <v-col
+          class="text-center"
+          cols="12"
+        >
+          <v-alert
+            color="error"
+            type="error"
+            variant="tonal"
+          >
+            {{ error }}
+          </v-alert>
+          <v-btn
+            class="mt-4"
+            color="primary"
+            @click="loadPublicAffairsData"
+          >
+            重試
+          </v-btn>
+        </v-col>
+      </v-row>
+
+      <!-- Quick Stats Content -->
+      <v-row v-else>
         <v-col
           v-for="stat in quickStats"
           :key="stat.title"
@@ -253,7 +141,7 @@
         </v-col>
       </v-row>
 
-      <v-row>
+      <v-row v-if="!loading && !error">
         <v-col
           v-for="category in publicAffairsCategories"
           :key="category.title"
@@ -336,7 +224,7 @@
           </v-col>
         </v-row>
 
-        <v-row>
+        <v-row v-if="!loading && !error">
           <v-col cols="12" md="8" offset-md="2">
             <v-card elevation="2" rounded="lg">
               <v-card-text class="pa-0">
@@ -418,7 +306,7 @@
         </v-col>
       </v-row>
 
-      <v-row>
+      <v-row v-if="!loading && !error">
         <v-col
           v-for="contact in contactInfo"
           :key="contact.title"

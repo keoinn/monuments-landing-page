@@ -1,46 +1,33 @@
 <script setup>
-  import { ref } from 'vue'
+  import { onMounted, ref } from 'vue'
+  import { fetchFeatures } from '@/apis/mocks/featuresApi'
   import landingViewImage from '@/assets/img/landing-view.webp'
 
   const monumentImage = ref(landingViewImage)
+  const features = ref([])
+  const loading = ref(false)
+  const error = ref(null)
 
-  const features = [
-    {
-      title: '歷史沿革',
-      description: '探索古蹟的建造背景、歷史變遷與文化意義',
-      icon: 'mdi-history',
-      color: 'primary',
-      to: '/history',
-    },
-    {
-      title: '組織架構',
-      description: '了解古蹟管理組織的結構與運作方式',
-      icon: 'mdi-account-group',
-      color: 'success',
-      to: '/organization',
-    },
-    {
-      title: '委員會務',
-      description: '查看理事會成員與相關公務資訊',
-      icon: 'mdi-account-tie',
-      color: 'info',
-      to: '/directors',
-    },
-    {
-      title: '公務資訊',
-      description: '瀏覽古蹟相關的公務公告與重要資訊',
-      icon: 'mdi-file-document',
-      color: 'warning',
-      to: '/public-affairs',
-    },
-    {
-      title: '最新公告',
-      description: '掌握古蹟管理處的最新公告與消息',
-      icon: 'mdi-bullhorn',
-      color: 'error',
-      to: '/announcements',
-    },
-  ]
+  // 從 API 獲取 features 資料
+  async function loadFeatures () {
+    loading.value = true
+    error.value = null
+
+    try {
+      const data = await fetchFeatures()
+      features.value = data
+    } catch (error_) {
+      error.value = error_.message || '載入資料時發生錯誤'
+      console.error('載入 features 失敗:', error_)
+    } finally {
+      loading.value = false
+    }
+  }
+
+  // 元件掛載時載入資料
+  onMounted(() => {
+    loadFeatures()
+  })
 
   const statistics = [
     { value: '200+', label: '年歷史' },
@@ -109,7 +96,48 @@
         </v-col>
       </v-row>
 
-      <v-row>
+      <!-- Loading State -->
+      <v-row v-if="loading">
+        <v-col
+          class="text-center"
+          cols="12"
+        >
+          <v-progress-circular
+            color="primary"
+            indeterminate
+            size="64"
+          />
+          <p class="mt-4 text-body-1 text-medium-emphasis">
+            載入中...
+          </p>
+        </v-col>
+      </v-row>
+
+      <!-- Error State -->
+      <v-row v-else-if="error">
+        <v-col
+          class="text-center"
+          cols="12"
+        >
+          <v-alert
+            color="error"
+            type="error"
+            variant="tonal"
+          >
+            {{ error }}
+          </v-alert>
+          <v-btn
+            class="mt-4"
+            color="primary"
+            @click="loadFeatures"
+          >
+            重試
+          </v-btn>
+        </v-col>
+      </v-row>
+
+      <!-- Features List -->
+      <v-row v-else>
         <v-col
           v-for="feature in features"
           :key="feature.title"

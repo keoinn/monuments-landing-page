@@ -1,104 +1,33 @@
 <script setup>
-  import landingViewImage from '@/assets/img/landing-view.webp'
+  import { onMounted, ref } from 'vue'
+  import { fetchOrganizationData } from '@/apis/mocks/organizationApi'
 
-  const departments = [
-    {
-      name: '行政部',
-      manager: '王建國',
-      description: '負責古蹟管理處的日常行政事務與人事管理',
-      icon: 'mdi-office-building',
-      color: 'primary',
-      phone: '02-1234-5678',
-      email: 'admin@monument.gov.tw',
-      responsibilities: [
-        '人事管理與員工培訓',
-        '財務預算編列與執行',
-        '文書處理與檔案管理',
-        '對外聯絡與協調',
-        '會議安排與記錄',
-      ],
-    },
-    {
-      name: '維護部',
-      manager: '陳志明',
-      description: '負責古蹟的日常維護與修復工作',
-      icon: 'mdi-hammer-wrench',
-      color: 'success',
-      phone: '02-1234-5679',
-      email: 'maintenance@monument.gov.tw',
-      responsibilities: [
-        '古蹟結構安全檢查',
-        '日常清潔與保養',
-        '修復工程規劃與執行',
-        '設備維護與更新',
-        '安全監控系統管理',
-      ],
-    },
-    {
-      name: '教育推廣部',
-      manager: '林雅婷',
-      description: '負責古蹟的教育推廣與文化活動',
-      icon: 'mdi-school',
-      color: 'info',
-      phone: '02-1234-5680',
-      email: 'education@monument.gov.tw',
-      responsibilities: [
-        '導覽服務與解說',
-        '教育活動規劃與執行',
-        '文化推廣活動',
-        '志工培訓與管理',
-        '文宣品製作與發行',
-      ],
-    },
-    {
-      name: '研究部',
-      manager: '黃文博',
-      description: '負責古蹟的學術研究與文獻整理',
-      icon: 'mdi-book-search',
-      color: 'warning',
-      phone: '02-1234-5681',
-      email: 'research@monument.gov.tw',
-      responsibilities: [
-        '古蹟歷史研究',
-        '文獻資料整理',
-        '學術論文發表',
-        '國際交流合作',
-        '數位典藏建置',
-      ],
-    },
-    {
-      name: '財務部',
-      manager: '劉美惠',
-      description: '負責古蹟管理處的財務管理與會計事務',
-      icon: 'mdi-calculator',
-      color: 'error',
-      phone: '02-1234-5682',
-      email: 'finance@monument.gov.tw',
-      responsibilities: [
-        '預算編列與執行',
-        '會計帳務處理',
-        '財務報表製作',
-        '採購管理',
-        '成本控制與分析',
-      ],
-    },
-    {
-      name: '資訊部',
-      manager: '張志強',
-      description: '負責古蹟管理處的資訊系統與數位化服務',
-      icon: 'mdi-laptop',
-      color: 'purple',
-      phone: '02-1234-5683',
-      email: 'it@monument.gov.tw',
-      responsibilities: [
-        '資訊系統維護',
-        '網站管理與更新',
-        '數位化服務開發',
-        '網路安全維護',
-        '技術支援服務',
-      ],
-    },
-  ]
+  const departments = ref([])
+  const organizationChart = ref(null)
+  const loading = ref(false)
+  const error = ref(null)
+
+  // 從 API 獲取組織資料
+  async function loadOrganizationData () {
+    loading.value = true
+    error.value = null
+
+    try {
+      const data = await fetchOrganizationData()
+      departments.value = data.departments
+      organizationChart.value = data.organizationChart
+    } catch (error_) {
+      error.value = error_.message || '載入資料時發生錯誤'
+      console.error('載入組織資料失敗:', error_)
+    } finally {
+      loading.value = false
+    }
+  }
+
+  // 元件掛載時載入資料
+  onMounted(() => {
+    loadOrganizationData()
+  })
 </script>
 <template>
   <div>
@@ -134,16 +63,60 @@
         </v-col>
       </v-row>
 
-      <v-row justify="center">
+      <!-- Loading State -->
+      <v-row v-if="loading">
+        <v-col
+          class="text-center"
+          cols="12"
+        >
+          <v-progress-circular
+            color="primary"
+            indeterminate
+            size="64"
+          />
+          <p class="mt-4 text-body-1 text-medium-emphasis">
+            載入中...
+          </p>
+        </v-col>
+      </v-row>
+
+      <!-- Error State -->
+      <v-row v-else-if="error">
+        <v-col
+          class="text-center"
+          cols="12"
+        >
+          <v-alert
+            color="error"
+            type="error"
+            variant="tonal"
+          >
+            {{ error }}
+          </v-alert>
+          <v-btn
+            class="mt-4"
+            color="primary"
+            @click="loadOrganizationData"
+          >
+            重試
+          </v-btn>
+        </v-col>
+      </v-row>
+
+      <!-- Organization Chart Content -->
+      <v-row v-else>
         <v-col cols="12" md="10">
           <v-card elevation="2" rounded="lg">
             <v-card-text class="pa-8">
               <div class="organization-chart">
                 <!-- 理事長 -->
-                <div class="org-level-1 text-center mb-6">
+                <div
+                  v-if="organizationChart"
+                  class="org-level-1 text-center mb-6"
+                >
                   <v-card
                     class="mx-auto"
-                    color="primary"
+                    :color="organizationChart.chairman.color"
                     rounded="lg"
                     style="max-width: 300px;"
                   >
@@ -151,22 +124,29 @@
                       <v-icon
                         class="mb-2"
                         color="white"
-                        icon="mdi-account-tie"
+                        :icon="organizationChart.chairman.icon"
                         size="32"
                       />
-                      <div class="text-h6 font-weight-bold text-white">理事長</div>
-                      <div class="text-body-2 text-white">張文華</div>
+                      <div class="text-h6 font-weight-bold text-white">
+                        {{ organizationChart.chairman.title }}
+                      </div>
+                      <div class="text-body-2 text-white">
+                        {{ organizationChart.chairman.name }}
+                      </div>
                     </v-card-text>
                   </v-card>
                 </div>
 
                 <!-- 副理事長 -->
-                <div class="org-level-2 text-center mb-6">
+                <div
+                  v-if="organizationChart"
+                  class="org-level-2 text-center mb-6"
+                >
                   <v-row justify="center">
                     <v-col cols="12" md="6">
                       <v-card
                         class="mx-auto"
-                        color="success"
+                        :color="organizationChart.viceChairman.color"
                         rounded="lg"
                         style="max-width: 250px;"
                       >
@@ -174,11 +154,15 @@
                           <v-icon
                             class="mb-2"
                             color="white"
-                            icon="mdi-account-tie-outline"
+                            :icon="organizationChart.viceChairman.icon"
                             size="28"
                           />
-                          <div class="text-h6 font-weight-bold text-white">副理事長</div>
-                          <div class="text-body-2 text-white">李美玲</div>
+                          <div class="text-h6 font-weight-bold text-white">
+                            {{ organizationChart.viceChairman.title }}
+                          </div>
+                          <div class="text-body-2 text-white">
+                            {{ organizationChart.viceChairman.name }}
+                          </div>
                         </v-card-text>
                       </v-card>
                     </v-col>
@@ -247,7 +231,7 @@
           </v-col>
         </v-row>
 
-        <v-row>
+        <v-row v-if="!loading && !error">
           <v-col
             v-for="department in departments"
             :key="department.name"
