@@ -1,5 +1,6 @@
 <script setup>
   import { computed, ref } from 'vue'
+  import landingViewImage from '@/assets/img/landing-view.webp'
 
   const searchQuery = ref('')
   const selectedCategory = ref('')
@@ -151,20 +152,22 @@
 <template>
   <div>
     <!-- Page Header -->
-    <v-container class="py-12">
-      <v-row justify="center">
-        <v-col
-          class="text-center"
-          cols="12"
-          md="8"
-        >
-          <h1 class="text-h2 text-md-h1 font-weight-bold mb-4">最新公告</h1>
-          <p class="text-h6 text-medium-emphasis">
-            古蹟管理處的最新公告與重要消息
-          </p>
-        </v-col>
-      </v-row>
-    </v-container>
+    <div class="page-header">
+      <v-container class="py-12">
+        <v-row justify="center">
+          <v-col
+            class="text-center"
+            cols="12"
+            md="8"
+          >
+            <h2 class="text-h2 text-md-h1 font-weight-bold mb-4 text-white">最新公告</h2>
+            <p class="text-h6 text-white">
+              古蹟管理處的最新公告與重要消息
+            </p>
+          </v-col>
+        </v-row>
+      </v-container>
+    </div>
 
     <!-- Filter and Search -->
     <v-container class="pb-8">
@@ -423,3 +426,29 @@
     </v-dialog>
   </div>
 </template>
+
+<style scoped lang="scss">
+.page-header {
+  position: relative;
+  background-image: url('@/assets/img/landing-view.webp');
+  background-size: cover;
+  background-position: center 20%;
+  background-repeat: no-repeat;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.4); /* 深色半透明遮罩，alpha 值 0.4 */
+    z-index: 0;
+  }
+
+  .v-container {
+    position: relative;
+    z-index: 1;
+  }
+}
+</style>

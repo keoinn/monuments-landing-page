@@ -1,0 +1,66 @@
+{
+  "features": [
+    {
+      "title": "歷史沿革",
+      "description": "探索古蹟的建造背景、歷史變遷與文化意義",
+      "icon": "mdi-history",
+      "color": "primary",
+      "to": "/history"
+    },
+    {
+      "title": "組織架構",
+      "description": "了解古蹟管理組織的結構與運作方式",
+      "icon": "mdi-account-group",
+      "color": "success",
+      "to": "/organization"
+    },
+    {
+      "title": "委員會務",
+      "description": "查看理事會成員與相關公務資訊",
+      "icon": "mdi-account-tie",
+      "color": "info",
+      "to": "/directors"
+    },
+    {
+      "title": "公務資訊",
+      "description": "瀏覽古蹟相關的公務公告與重要資訊",
+      "icon": "mdi-file-document",
+      "color": "warning",
+      "to": "/public-affairs"
+    },
+    {
+      "title": "最新公告",
+      "description": "掌握古蹟管理處的最新公告與消息",
+      "icon": "mdi-bullhorn",
+      "color": "error",
+      "to": "/announcements"
+    }
+  ],
+  "statistics": [
+    {
+      "value": "200+",
+      "label": "年歷史"
+    },
+    {
+      "value": "50+",
+      "label": "重要文物"
+    },
+    {
+      "value": "1000+",
+      "label": "參觀人次"
+    },
+    {
+      "value": "5",
+      "label": "星級評等"
+    }
+  ],
+  "hero": {
+    "title": "青錢萬選",
+    "description": "深入了解這座珍貴古蹟的歷史沿革、組織架構與文化價值",
+    "buttonText": "開始探索",
+    "buttonLink": "/history"
+  }
+}
+
+
+

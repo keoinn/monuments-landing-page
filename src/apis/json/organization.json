@@ -1,0 +1,117 @@
+{
+  "departments": [
+    {
+      "name": "行政部",
+      "manager": "王建國",
+      "description": "負責古蹟管理處的日常行政事務與人事管理",
+      "icon": "mdi-office-building",
+      "color": "primary",
+      "phone": "02-1234-5678",
+      "email": "admin@monument.gov.tw",
+      "responsibilities": [
+        "人事管理與員工培訓",
+        "財務預算編列與執行",
+        "文書處理與檔案管理",
+        "對外聯絡與協調",
+        "會議安排與記錄"
+      ]
+    },
+    {
+      "name": "維護部",
+      "manager": "陳志明",
+      "description": "負責古蹟的日常維護與修復工作",
+      "icon": "mdi-hammer-wrench",
+      "color": "success",
+      "phone": "02-1234-5679",
+      "email": "maintenance@monument.gov.tw",
+      "responsibilities": [
+        "古蹟結構安全檢查",
+        "日常清潔與保養",
+        "修復工程規劃與執行",
+        "設備維護與更新",
+        "安全監控系統管理"
+      ]
+    },
+    {
+      "name": "教育推廣部",
+      "manager": "林雅婷",
+      "description": "負責古蹟的教育推廣與文化活動",
+      "icon": "mdi-school",
+      "color": "info",
+      "phone": "02-1234-5680",
+      "email": "education@monument.gov.tw",
+      "responsibilities": [
+        "導覽服務與解說",
+        "教育活動規劃與執行",
+        "文化推廣活動",
+        "志工培訓與管理",
+        "文宣品製作與發行"
+      ]
+    },
+    {
+      "name": "研究部",
+      "manager": "黃文博",
+      "description": "負責古蹟的學術研究與文獻整理",
+      "icon": "mdi-book-search",
+      "color": "warning",
+      "phone": "02-1234-5681",
+      "email": "research@monument.gov.tw",
+      "responsibilities": [
+        "古蹟歷史研究",
+        "文獻資料整理",
+        "學術論文發表",
+        "國際交流合作",
+        "數位典藏建置"
+      ]
+    },
+    {
+      "name": "財務部",
+      "manager": "劉美惠",
+      "description": "負責古蹟管理處的財務管理與會計事務",
+      "icon": "mdi-calculator",
+      "color": "error",
+      "phone": "02-1234-5682",
+      "email": "finance@monument.gov.tw",
+      "responsibilities": [
+        "預算編列與執行",
+        "會計帳務處理",
+        "財務報表製作",
+        "採購管理",
+        "成本控制與分析"
+      ]
+    },
+    {
+      "name": "資訊部",
+      "manager": "張志強",
+      "description": "負責古蹟管理處的資訊系統與數位化服務",
+      "icon": "mdi-laptop",
+      "color": "purple",
+      "phone": "02-1234-5683",
+      "email": "it@monument.gov.tw",
+      "responsibilities": [
+        "資訊系統維護",
+        "網站管理與更新",
+        "數位化服務開發",
+        "網路安全維護",
+        "技術支援服務"
+      ]
+    }
+  ],
+  "organizationChart": {
+    "chairman": {
+      "name": "張文華",
+      "title": "理事長",
+      "icon": "mdi-account-tie",
+      "color": "primary"
+    },
+    "viceChairman": {
+      "name": "李美玲",
+      "title": "副理事長",
+      "icon": "mdi-account-tie-outline",
+      "color": "success"
+    }
+  }
+}
+
+
+
