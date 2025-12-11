@@ -26,6 +26,7 @@
     date: new Date().toISOString().split('T')[0],
     author: '',
     category: '',
+    status: '進行中',
     isImportant: false,
     icon: 'mdi-bullhorn',
     color: 'primary',
@@ -55,6 +56,9 @@
 
   // 顏色選項（從 Supabase 載入）
   const colorOptions = ref([])
+
+  // 狀態選項（從 Supabase 載入）
+  const statusOptions = ref([])
 
   // 分類與圖示、顏色的映射（用於自動設定）
   const categoryIconColorMap = {
@@ -114,6 +118,10 @@
       errors.value.category = '請選擇分類'
     }
 
+    if (!form.value.status) {
+      errors.value.status = '請選擇狀態'
+    }
+
     return Object.keys(errors.value).length === 0
   }
 
@@ -157,6 +165,7 @@
         date: announcement.date ? announcement.date.split('T')[0] : new Date().toISOString().split('T')[0],
         author: announcement.author || '',
         category: announcement.category || '',
+        status: announcement.status || '進行中',
         isImportant: announcement.is_important || false,
         icon: announcement.icon || 'mdi-bullhorn',
         color: announcement.color || 'primary',
@@ -256,6 +265,7 @@
           date: form.value.date,
           author: form.value.author.trim(),
           category: form.value.category,
+          status: form.value.status,
           is_important: form.value.isImportant,
           icon: form.value.icon,
           color: form.value.color,
@@ -369,6 +379,27 @@
           }
         })
       }
+
+      // 載入狀態選項
+      const { data: statusData, error: statusError } = await supabase
+        .from('option')
+        .select('value, label')
+        .eq('module', 'announcements')
+        .eq('cate', 'statusOptions')
+        .order('key')
+
+      if (!statusError && statusData) {
+        // 過濾掉「全部」選項，只保留實際狀態
+        statusOptions.value = statusData
+          .filter(item => {
+            const value = item.value || item.label
+            return value !== '全部'
+          })
+          .map(item => ({
+            value: item.value || item.label,
+            text: item.label || item.value,
+          }))
+      }
     } catch (error_) {
       console.error('載入選項資料失敗:', error_)
       // 如果載入失敗，使用預設值
@@ -400,6 +431,13 @@
           { value: 'info', text: '資訊', color: 'info' },
           { value: 'warning', text: '警告', color: 'warning' },
           { value: 'error', text: '錯誤', color: 'error' },
+        ]
+      }
+      if (statusOptions.value.length === 0) {
+        statusOptions.value = [
+          { value: '最新', text: '最新' },
+          { value: '進行中', text: '進行中' },
+          { value: '已結束', text: '已結束' },
         ]
       }
     }
@@ -553,6 +591,21 @@
                 :error-messages="errors.date"
                 required
                 prepend-inner-icon="mdi-calendar"
+              />
+            </v-col>
+
+            <!-- 狀態 -->
+            <v-col cols="12" md="6">
+              <v-select
+                v-model="form.status"
+                :items="statusOptions"
+                item-title="text"
+                item-value="value"
+                label="狀態 *"
+                variant="outlined"
+                :error-messages="errors.status"
+                required
+                prepend-inner-icon="mdi-information-outline"
               />
             </v-col>
 

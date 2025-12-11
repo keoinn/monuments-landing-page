@@ -159,6 +159,16 @@
     return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i]
   }
 
+  // 獲取狀態顏色
+  function getStatusColor (status) {
+    const statusColorMap = {
+      進行中: 'info',
+      已結束: 'default',
+      最新: 'success',
+    }
+    return statusColorMap[status] || 'info'
+  }
+
   // 元件掛載時載入資料
   onMounted(async () => {
     await authStore.initAuth()
@@ -268,6 +278,9 @@
               日期
             </th>
             <th class="text-center">
+              狀態
+            </th>
+            <th class="text-center">
               瀏覽次數
             </th>
             <th class="text-center">
@@ -286,7 +299,7 @@
             v-if="filteredAnnouncements.length === 0"
             class="text-center"
           >
-            <td colspan="8" class="py-8 text-medium-emphasis">
+            <td colspan="9" class="py-8 text-medium-emphasis">
               目前沒有公告
             </td>
           </tr>
@@ -316,6 +329,15 @@
             </td>
             <td>
               {{ formatDate(announcement.date) }}
+            </td>
+            <td class="text-center">
+              <v-chip
+                :color="getStatusColor(announcement.status)"
+                size="small"
+                variant="tonal"
+              >
+                {{ announcement.status || '進行中' }}
+              </v-chip>
             </td>
             <td class="text-center">
               {{ announcement.views || 0 }}

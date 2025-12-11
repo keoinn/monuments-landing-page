@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS announcements (
   date DATE NOT NULL,
   author TEXT NOT NULL,
   category TEXT NOT NULL,
+  status TEXT DEFAULT '進行中' NOT NULL,
   views INTEGER DEFAULT 0 NOT NULL,
   is_important BOOLEAN DEFAULT false NOT NULL,
   icon TEXT NOT NULL,
@@ -23,6 +24,7 @@ CREATE TABLE IF NOT EXISTS announcements (
 -- 建立索引以提升查詢效能
 CREATE INDEX IF NOT EXISTS idx_announcements_date ON announcements(date DESC);
 CREATE INDEX IF NOT EXISTS idx_announcements_category ON announcements(category);
+CREATE INDEX IF NOT EXISTS idx_announcements_status ON announcements(status);
 CREATE INDEX IF NOT EXISTS idx_announcements_is_important ON announcements(is_important);
 CREATE INDEX IF NOT EXISTS idx_announcements_created_at ON announcements(created_at DESC);
 
@@ -55,6 +57,7 @@ COMMENT ON COLUMN announcements.full_content IS '公告完整內容';
 COMMENT ON COLUMN announcements.date IS '公告日期';
 COMMENT ON COLUMN announcements.author IS '發布者/部門';
 COMMENT ON COLUMN announcements.category IS '公告分類（工程公告、活動訊息、服務異動、法規更新、人事異動等）';
+COMMENT ON COLUMN announcements.status IS '公告狀態（進行中、已結束等）';
 COMMENT ON COLUMN announcements.views IS '瀏覽次數';
 COMMENT ON COLUMN announcements.is_important IS '是否為重要公告';
 COMMENT ON COLUMN announcements.icon IS '圖示名稱（Material Design Icons）';
@@ -258,6 +261,7 @@ CREATE POLICY "Allow authenticated users to delete announcement_attachments"
 --   date,
 --   author,
 --   category,
+--   status,
 --   views,
 --   is_important,
 --   icon,
@@ -269,6 +273,7 @@ CREATE POLICY "Allow authenticated users to delete announcement_attachments"
 --   '2024-01-20',
 --   '維護部',
 --   '工程公告',
+--   '進行中',
 --   156,
 --   true,
 --   'mdi-hammer-wrench',
@@ -398,4 +403,23 @@ CREATE TRIGGER update_attachment_file_url
 -- 註解說明
 COMMENT ON FUNCTION get_storage_url IS '產生 Supabase Storage 的公開 URL';
 COMMENT ON FUNCTION update_file_url_from_storage_path IS '自動從 storage_path 產生 file_url';
+
+-- ============================================
+-- Migration: 為現有表格添加 status 欄位（如果表格已存在）
+-- ============================================
+
+-- 如果表格已經存在但沒有 status 欄位，執行以下 SQL 來添加
+-- ALTER TABLE announcements 
+-- ADD COLUMN IF NOT EXISTS status TEXT DEFAULT '進行中' NOT NULL;
+
+-- 為現有記錄設定預設狀態（如果需要）
+-- UPDATE announcements 
+-- SET status = '進行中' 
+-- WHERE status IS NULL OR status = '';
+
+-- 建立索引（如果尚未存在）
+-- CREATE INDEX IF NOT EXISTS idx_announcements_status ON announcements(status);
+
+-- 添加註解
+-- COMMENT ON COLUMN announcements.status IS '公告狀態（進行中、已結束等）';
 

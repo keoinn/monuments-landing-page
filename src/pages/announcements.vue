@@ -3,8 +3,8 @@
   import { supabase } from '@/lib/supabaseClient'
 
   const searchQuery = ref('')
-  const selectedCategory = ref('')
-  const selectedStatus = ref('')
+  const selectedCategory = ref('全部')
+  const selectedStatus = ref('全部')
   const currentPage = ref(1)
   const showDetailDialog = ref(false)
   const selectedAnnouncement = ref(null)
