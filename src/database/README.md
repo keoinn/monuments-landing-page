@@ -14,6 +14,14 @@
 - Row Level Security (RLS) 政策（兩個表格都有）
 - 自動更新時間戳記的觸發器
 
+### option_schema.sql
+選項資料表的 schema 定義，包含：
+- `option` 表格結構定義（用於存儲系統配置選項）
+- 索引建立（提升查詢效能）
+- Row Level Security (RLS) 政策
+- 自動更新時間戳記的觸發器
+- 唯一約束（確保同一分類下的鍵是唯一的）
+
 ## 使用方式
 
 ### 在 Supabase Dashboard 中執行
@@ -67,6 +75,19 @@ supabase migration new announcements_schema
 | display_order | INTEGER | 顯示順序（用於排序），預設 0 |
 | created_at | TIMESTAMPTZ | 建立時間，自動產生 |
 | updated_at | TIMESTAMPTZ | 最後更新時間，自動更新 |
+
+### option
+
+| 欄位名稱 | 類型 | 說明 |
+|---------|------|------|
+| id | UUID | 主鍵，自動產生 |
+| cate | TEXT | 選項分類（例如：site、email、notification 等） |
+| key | TEXT | 選項鍵名（在同一分類下必須唯一） |
+| value | TEXT | 選項值（可以是任何文字內容） |
+| created_at | TIMESTAMPTZ | 建立時間，自動產生 |
+| updated_at | TIMESTAMPTZ | 最後更新時間，自動更新 |
+
+**注意**：`(cate, key)` 組合必須唯一，使用 `UNIQUE(cate, key)` 約束確保。
 
 ### 關聯說明
 

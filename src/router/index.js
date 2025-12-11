@@ -19,9 +19,20 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore()
 
-  // 初始化認證狀態（如果尚未初始化）
-  if (!authStore.user && !authStore.loading) {
+  // 初始化認證狀態（如果尚未初始化或正在載入中）
+  if (!authStore.user) {
+    // 如果正在載入中，等待載入完成
+    if (authStore.loading) {
+      // 等待載入完成（最多等待 3 秒）
+      let waitCount = 0
+      while (authStore.loading && waitCount < 30) {
+        await new Promise(resolve => setTimeout(resolve, 100))
+        waitCount++
+      }
+    } else {
+      // 如果沒有載入中，則初始化認證
     await authStore.initAuth()
+    }
   }
 
   // 檢查是否為管理頁面
@@ -33,6 +44,8 @@ router.beforeEach(async (to, from, next) => {
       '/admin/forgot-password',
       '/admin/reset-password',
     ]
+
+    console.log('authStore.isAuthenticated', authStore.isAuthenticated)
 
     if (publicPages.includes(to.path)) {
       // 如果已登入，導向管理首頁

@@ -1,6 +1,6 @@
 <script setup>
-  import { computed, onMounted, ref } from 'vue'
-  import { supabase } from '@/lib/supabaseClient'
+  import { computed, ref } from 'vue'
+  import landingViewImage from '@/assets/img/landing-view.webp'
 
   const searchQuery = ref('')
   const selectedCategory = ref('')
@@ -8,184 +8,109 @@
   const currentPage = ref(1)
   const showDetailDialog = ref(false)
   const selectedAnnouncement = ref(null)
-  const announcements = ref([])
-  const loading = ref(false)
-  const error = ref(null)
 
-  const categories = ref(['全部', '重要公告'])
-  const statusOptions = ref(['全部'])
+  const categories = [
+    '全部',
+    '重要公告',
+    '活動訊息',
+    '服務異動',
+    '法規更新',
+    '工程公告',
+    '人事異動',
+  ]
 
-  // 格式化日期
-  function formatDate (date) {
-    if (!date) return ''
-    const d = new Date(date)
-    return d.toLocaleDateString('zh-TW', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-    })
-  }
+  const statusOptions = [
+    '全部',
+    '最新',
+    '進行中',
+    '已結束',
+  ]
 
-  // 轉換 Supabase 數據格式為前端格式
-  function transformAnnouncement (announcement) {
-    return {
-      id: announcement.id,
-      title: announcement.title,
-      content: announcement.content,
-      fullContent: announcement.full_content,
-      date: formatDate(announcement.date),
-      author: announcement.author,
-      category: announcement.category,
-      views: announcement.views || 0,
-      isImportant: announcement.is_important || false,
-      icon: announcement.icon || 'mdi-bullhorn',
-      color: announcement.color || 'primary',
-      attachments: announcement.announcement_attachments?.map(att => ({
-        id: att.id,
-        name: att.file_name,
-        url: att.file_url,
-        size: att.file_size,
-        type: att.file_type,
-      })) || [],
-    }
-  }
-
-  // 從 Supabase 載入選項資料
-  async function loadOptions () {
-    try {
-      // 載入分類選項
-      const { data: categoriesData, error: categoriesError } = await supabase
-        .from('option')
-        .select('value, label')
-        .eq('module', 'announcements')
-        .eq('cate', 'categories')
-        .order('key')
-
-      if (!categoriesError && categoriesData) {
-        // 將資料庫中的分類添加到 categories（保留 '全部' 和 '重要公告'）
-        const dbCategories = categoriesData.map(item => item.value || item.label)
-        categories.value = ['全部', '重要公告', ...dbCategories]
-      }
-
-      // 載入狀態選項
-      const { data: statusData, error: statusError } = await supabase
-        .from('option')
-        .select('value, label')
-        .eq('module', 'announcements')
-        .eq('cate', 'statusOptions')
-        .order('key')
-
-      if (!statusError && statusData) {
-        // 將資料庫中的狀態選項添加到 statusOptions
-        statusOptions.value = statusData.map(item => item.value || item.label)
-      }
-    } catch (error_) {
-      console.error('載入選項資料失敗:', error_)
-      // 如果載入失敗，使用預設值
-      if (categories.value.length === 2) {
-        categories.value = ['全部', '重要公告', '活動訊息', '服務異動', '法規更新', '工程公告', '人事異動']
-      }
-      if (statusOptions.value.length === 1) {
-        statusOptions.value = ['全部', '最新', '進行中', '已結束']
-      }
-    }
-  }
-
-  // 從 Supabase 獲取公告資料
-  async function loadAnnouncements () {
-    loading.value = true
-    error.value = null
-
-    try {
-      // 查詢公告及其附件
-      const { data, error: fetchError } = await supabase
-        .from('announcements')
-        .select(`
-          *,
-          announcement_attachments (
-            id,
-            file_name,
-            file_url,
-            file_size,
-            file_type,
-            display_order
-          )
-        `)
-        .order('date', { ascending: false })
-        .order('created_at', { ascending: false })
-
-      if (fetchError) throw fetchError
-
-      // 轉換數據格式
-      announcements.value = (data || []).map(item => transformAnnouncement(item))
-    } catch (error_) {
-      error.value = error_.message || '載入資料時發生錯誤'
-      console.error('載入公告資料失敗:', error_)
-    } finally {
-      loading.value = false
-    }
-  }
-
-  // 更新瀏覽次數
-  async function updateViews (announcementId) {
-    try {
-      // 先獲取當前瀏覽次數
-      const { data: currentAnnouncement, error: fetchError } = await supabase
-        .from('announcements')
-        .select('views')
-        .eq('id', announcementId)
-        .single()
-
-      if (fetchError) {
-        console.error('獲取瀏覽次數失敗:', fetchError)
-        return
-      }
-
-      // 更新瀏覽次數
-      const { error: updateError } = await supabase
-        .from('announcements')
-        .update({ views: (currentAnnouncement.views || 0) + 1 })
-        .eq('id', announcementId)
-
-      if (updateError) {
-        console.error('更新瀏覽次數失敗:', updateError)
-      }
-    } catch (error_) {
-      console.error('更新瀏覽次數時發生錯誤:', error_)
-    }
-  }
-
-  // 元件掛載時載入資料
-  onMounted(async () => {
-    // 先載入選項，再載入公告
-    await loadOptions()
-    await loadAnnouncements()
-  })
+  const announcements = [
+    {
+      title: '古蹟維護工程期間參觀注意事項',
+      content: '因進行古蹟維護工程，部分區域將暫時關閉，請參觀民眾注意安全...',
+      fullContent: '因進行古蹟維護工程，部分區域將暫時關閉。工程期間，請參觀民眾注意以下事項：\n\n1. 請遵循現場工作人員指示，勿進入施工區域\n2. 參觀時請保持安靜，避免影響工程進行\n3. 建議提前預約參觀時間，避免現場等候\n4. 如有任何疑問，請洽詢服務台工作人員\n\n工程預計於2024年3月底完成，感謝您的配合與諒解。',
+      date: '2024-01-20',
+      author: '維護部',
+      category: '工程公告',
+      views: 156,
+      isImportant: true,
+      icon: 'mdi-hammer-wrench',
+      color: 'warning',
+      attachments: ['工程公告.pdf', '參觀須知.docx'],
+    },
+    {
+      title: '2024年春季文化講座系列活動',
+      content: '邀請知名學者分享古蹟歷史與文化價值，歡迎民眾踴躍參加...',
+      fullContent: '2024年春季文化講座系列活動即將開始，我們邀請了多位知名學者與專家，為大家分享古蹟的歷史背景、建築特色與文化價值。\n\n講座主題包括：\n- 古蹟建築藝術賞析\n- 歷史文化背景探討\n- 修復技術與工法介紹\n- 文化資產保護理念\n\n活動時間：每週六下午2:00-4:00\n活動地點：古蹟管理處會議室\n報名方式：請至服務台或線上報名\n\n名額有限，歡迎有興趣的民眾踴躍參加！',
+      date: '2024-01-18',
+      author: '教育推廣部',
+      category: '活動訊息',
+      views: 89,
+      isImportant: false,
+      icon: 'mdi-school',
+      color: 'info',
+      attachments: ['講座海報.jpg', '報名表.docx'],
+    },
+    {
+      title: '古蹟導覽服務時間調整公告',
+      content: '自2月1日起，導覽服務時間將調整為每週二至週日，週一休館...',
+      fullContent: '自2024年2月1日起，古蹟導覽服務時間將進行調整：\n\n開放時間：\n- 週二至週日：上午9:00-下午5:00\n- 週一：休館（國定假日除外）\n\n導覽服務：\n- 定時導覽：每日上午10:00、下午2:00\n- 團體導覽：需提前3天預約\n- 語音導覽：提供中、英、日三種語言\n\n票價資訊：\n- 全票：100元\n- 優待票：50元（學生、65歲以上長者）\n- 團體票：80元（20人以上）\n\n如有任何疑問，請洽詢服務台或來電詢問。',
+      date: '2024-01-15',
+      author: '服務部',
+      category: '服務異動',
+      views: 234,
+      isImportant: false,
+      icon: 'mdi-clock',
+      color: 'primary',
+      attachments: ['服務時間表.pdf'],
+    },
+    {
+      title: '古蹟保護法規修訂公告',
+      content: '文化部修訂古蹟保護相關法規，請相關人員詳閱新規定...',
+      fullContent: '文化部於2024年1月10日發布修訂「文化資產保存法」部分條文，主要修訂內容包括：\n\n1. 古蹟修復準則更新\n2. 管理維護責任明確化\n3. 違規處罰標準調整\n4. 申請程序簡化\n\n詳細修訂內容請參閱附件法規條文，請相關人員務必詳閱並遵循新規定。\n\n如有疑問，請洽詢法務部門或文化部相關單位。',
+      date: '2024-01-12',
+      author: '法務部',
+      category: '法規更新',
+      views: 67,
+      isImportant: true,
+      icon: 'mdi-gavel',
+      color: 'error',
+      attachments: ['修訂法規.pdf', '修訂說明.docx'],
+    },
+    {
+      title: '古蹟管理處人事異動公告',
+      content: '公告最新人事異動情況，包括新進人員與職務調整...',
+      fullContent: '古蹟管理處最新人事異動公告：\n\n新進人員：\n- 王小明：教育推廣部專員\n- 李小華：維護部技師\n- 張大偉：行政部助理\n\n職務調整：\n- 陳志明：維護部技師 → 維護部組長\n- 林雅婷：教育推廣部專員 → 教育推廣部副主任\n\n以上異動自2024年2月1日起生效，請各部門配合相關交接工作。',
+      date: '2024-01-10',
+      author: '人事部',
+      category: '人事異動',
+      views: 45,
+      isImportant: false,
+      icon: 'mdi-account-group',
+      color: 'success',
+      attachments: ['人事異動令.pdf'],
+    },
+  ]
 
   const filteredAnnouncements = computed(() => {
-    let filtered = announcements.value
+    let filtered = announcements
 
-    // 搜尋篩選
     if (searchQuery.value) {
       const query = searchQuery.value.toLowerCase()
       filtered = filtered.filter(announcement =>
-        announcement.title?.toLowerCase().includes(query)
-        || announcement.content?.toLowerCase().includes(query)
-        || announcement.fullContent?.toLowerCase().includes(query),
+        announcement.title.toLowerCase().includes(query)
+        || announcement.content.toLowerCase().includes(query),
       )
     }
 
-    // 分類篩選
     if (selectedCategory.value && selectedCategory.value !== '全部') {
-      // 處理「重要公告」特殊情況
-      filtered = selectedCategory.value === '重要公告'
-        ? filtered.filter(announcement => announcement.isImportant)
-        : filtered.filter(announcement =>
-          announcement.category === selectedCategory.value,
-        )
+      filtered = filtered.filter(announcement =>
+        announcement.category === selectedCategory.value,
+      )
     }
 
-    // 狀態篩選
     if (selectedStatus.value === '最新') {
       filtered = filtered.filter(announcement => announcement.isImportant)
     }
@@ -197,29 +122,20 @@
     return Math.ceil(filteredAnnouncements.value.length / 10)
   })
 
-  async function viewAnnouncement (announcement) {
+  function viewAnnouncement (announcement) {
     selectedAnnouncement.value = announcement
     showDetailDialog.value = true
-
-    // 更新瀏覽次數（異步，不阻塞 UI）
-    if (announcement.id) {
-      await updateViews(announcement.id)
-      // 更新本地顯示的瀏覽次數
-      announcement.views = (announcement.views || 0) + 1
-    }
+    // 增加瀏覽次數
+    announcement.views++
   }
 
   function downloadAttachment (attachment) {
-    // 如果有 URL，直接打開下載
-    if (attachment.url) {
-      window.open(attachment.url, '_blank')
-    } else {
-      console.error('附件 URL 不存在:', attachment)
-    }
+    // 模擬下載
+    console.log(`下載附件: ${attachment}`)
   }
 
   function shareAnnouncement () {
-    // 分享功能
+    // 模擬分享功能
     if (navigator.share) {
       navigator.share({
         title: selectedAnnouncement.value.title,
@@ -299,48 +215,7 @@
 
     <!-- Announcements List -->
     <v-container class="pb-16">
-      <!-- Loading State -->
-      <v-row v-if="loading">
-        <v-col
-          class="text-center"
-          cols="12"
-        >
-          <v-progress-circular
-            color="primary"
-            indeterminate
-            size="64"
-          />
-          <p class="mt-4 text-body-1 text-medium-emphasis">
-            載入中...
-          </p>
-        </v-col>
-      </v-row>
-
-      <!-- Error State -->
-      <v-row v-else-if="error">
-        <v-col
-          class="text-center"
-          cols="12"
-        >
-          <v-alert
-            color="error"
-            type="error"
-            variant="tonal"
-          >
-            {{ error }}
-          </v-alert>
-          <v-btn
-            class="mt-4"
-            color="primary"
-            @click="loadAnnouncements"
-          >
-            重試
-          </v-btn>
-        </v-col>
-      </v-row>
-
-      <!-- Announcements Content -->
-      <v-row v-else>
+      <v-row>
         <v-col cols="12" md="8" offset-md="2">
           <v-card elevation="2" rounded="lg">
             <v-card-text class="pa-0">
@@ -407,22 +282,20 @@
                     {{ announcement.views }} 次瀏覽
                   </div>
 
-                  <div v-if="announcement.attachments && announcement.attachments.length > 0" class="mb-2">
+                  <div v-if="announcement.attachments" class="mb-2">
                     <v-chip
                       v-for="attachment in announcement.attachments"
-                      :key="attachment.id"
+                      :key="attachment"
                       class="mr-2"
-                      clickable
                       size="small"
                       variant="outlined"
-                      @click="downloadAttachment(attachment)"
                     >
                       <v-icon
                         class="mr-1"
                         icon="mdi-paperclip"
                         size="14"
                       />
-                      {{ attachment.name }}
+                      {{ attachment }}
                     </v-chip>
                   </div>
 
@@ -507,17 +380,16 @@
         </v-card-subtitle>
 
         <v-card-text class="pa-6 pt-0">
-          <div
-            class="text-body-1 line-height-2"
-            v-html="selectedAnnouncement.fullContent"
-          />
+          <div class="text-body-1 line-height-2">
+            {{ selectedAnnouncement.fullContent }}
+          </div>
 
-          <div v-if="selectedAnnouncement.attachments && selectedAnnouncement.attachments.length > 0" class="mt-6">
+          <div v-if="selectedAnnouncement.attachments" class="mt-6">
             <h4 class="text-subtitle-1 font-weight-bold mb-3">附件下載：</h4>
             <div class="d-flex flex-wrap gap-2">
               <v-chip
                 v-for="attachment in selectedAnnouncement.attachments"
-                :key="attachment.id"
+                :key="attachment"
                 clickable
                 size="small"
                 variant="outlined"
@@ -528,7 +400,7 @@
                   icon="mdi-download"
                   size="14"
                 />
-                {{ attachment.name }}
+                {{ attachment }}
               </v-chip>
             </div>
           </div>
@@ -562,7 +434,7 @@
   background-size: cover;
   background-position: center 20%;
   background-repeat: no-repeat;
-
+  
   &::before {
     content: '';
     position: absolute;
