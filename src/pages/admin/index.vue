@@ -74,6 +74,35 @@
             elevation="2"
             hover
             rounded="lg"
+            @click="router.push('/admin/history')"
+          >
+            <v-card-text class="pa-6 text-center">
+              <v-icon
+                class="mb-4"
+                color="warning"
+                icon="mdi-history"
+                size="48"
+              />
+              <h3 class="text-h5 font-weight-bold mb-2">
+                歷史沿革管理
+              </h3>
+              <p class="text-body-2 text-medium-emphasis">
+                管理時間軸事件與歷史意義
+              </p>
+            </v-card-text>
+          </v-card>
+        </v-col>
+
+        <v-col
+          cols="12"
+          md="6"
+          lg="4"
+        >
+          <v-card
+            class="h-100"
+            elevation="2"
+            hover
+            rounded="lg"
           >
             <v-card-text class="pa-6 text-center">
               <v-icon

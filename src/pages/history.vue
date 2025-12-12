@@ -1,21 +1,112 @@
 <script setup>
   import { onMounted, ref } from 'vue'
-  import { fetchHistoryData } from '@/apis/mocks/historyApi'
+  import { supabase } from '@/lib/supabaseClient'
 
   const timelineEvents = ref([])
   const historicalSignificance = ref([])
   const loading = ref(false)
   const error = ref(null)
 
-  // 從 API 獲取歷史資料
+  // Storage bucket 名稱
+  const BUCKET_NAME = 'wanxuanju-files'
+
+  // 轉換時間軸事件資料格式
+  function transformTimelineEvent (event) {
+    // 處理圖片 URL：優先使用 image_url，如果有 storage_path 則生成公開 URL
+    let imageUrl = null
+    if (event.image_url) {
+      imageUrl = event.image_url
+    } else if (event.storage_path) {
+      // 從 Supabase Storage 生成公開 URL
+      const { data: { publicUrl } } = supabase.storage
+        .from(BUCKET_NAME)
+        .getPublicUrl(event.storage_path)
+      imageUrl = publicUrl
+    }
+
+    return {
+      year: event.year,
+      title: event.title,
+      description: event.description,
+      icon: event.icon || 'mdi-calendar',
+      color: event.color || 'primary',
+      image: imageUrl,
+    }
+  }
+
+  // 轉換歷史意義資料格式
+  function transformSignificance (item) {
+    // 處理圖片 URL：優先使用 image_url，如果有 storage_path 則生成公開 URL
+    let imageUrl = null
+    if (item.image_url) {
+      imageUrl = item.image_url
+    } else if (item.storage_path) {
+      // 從 Supabase Storage 生成公開 URL
+      const { data: { publicUrl } } = supabase.storage
+        .from(BUCKET_NAME)
+        .getPublicUrl(item.storage_path)
+      imageUrl = publicUrl
+    }
+
+    return {
+      title: item.title,
+      description: item.description,
+      icon: item.icon || 'mdi-information',
+      color: item.color || 'primary',
+      image: imageUrl,
+    }
+  }
+
+  // 從 Supabase 載入時間軸事件
+  async function loadTimelineEvents () {
+    try {
+      const { data, error: fetchError } = await supabase
+        .from('history_timeline_events')
+        .select('*')
+        .order('display_order', { ascending: true })
+        .order('year', { ascending: true })
+
+      if (fetchError) throw fetchError
+
+      if (data) {
+        timelineEvents.value = data.map(event => transformTimelineEvent(event))
+      }
+    } catch (error_) {
+      console.error('載入時間軸事件失敗:', error_)
+      throw error_
+    }
+  }
+
+  // 從 Supabase 載入歷史意義資料
+  async function loadHistoricalSignificance () {
+    try {
+      const { data, error: fetchError } = await supabase
+        .from('history_significance')
+        .select('*')
+        .order('display_order', { ascending: true })
+
+      if (fetchError) throw fetchError
+
+      if (data) {
+        historicalSignificance.value = data.map(item => transformSignificance(item))
+      }
+    } catch (error_) {
+      console.error('載入歷史意義資料失敗:', error_)
+      throw error_
+    }
+  }
+
+  // 從 Supabase 獲取歷史資料
   async function loadHistoryData () {
     loading.value = true
     error.value = null
 
     try {
-      const data = await fetchHistoryData()
-      timelineEvents.value = data.timelineEvents
-      historicalSignificance.value = data.historicalSignificance
+      // 並行載入兩個資料表
+      await Promise.all([
+        loadTimelineEvents(),
+        loadHistoricalSignificance(),
+      ])
     } catch (error_) {
       error.value = error_.message || '載入資料時發生錯誤'
       console.error('載入歷史資料失敗:', error_)
@@ -135,8 +226,9 @@
                   </p>
                   <div v-if="event.image" class="mt-4">
                     <v-img
-                      cover
-                      height="200"
+                      contain
+                      max-height="800"
+                      min-width="400"
                       rounded="lg"
                       :src="event.image"
                     />
@@ -182,7 +274,17 @@
               rounded="lg"
             >
               <v-card-text class="pa-6 text-center">
+                <div v-if="significance.image" class="mb-4">
+                  <v-img
+                    contain
+                    max-height="200"
+                    min-width="200"
+                    rounded="lg"
+                    :src="significance.image"
+                  />
+                </div>
                 <v-icon
+                  v-else
                   class="mb-4"
                   :color="significance.color"
                   :icon="significance.icon"
