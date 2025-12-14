@@ -1,99 +1,21 @@
 <script setup>
   import { onMounted, ref } from 'vue'
-  import { supabase } from '@/lib/supabaseClient'
+  import { fetchOrganizationData } from '@/apis/mocks/organizationApi'
 
   const departments = ref([])
   const organizationChart = ref(null)
   const loading = ref(false)
   const error = ref(null)
 
-  // 轉換部門資料格式
-  function transformDepartment (department) {
-    return {
-      name: department.name,
-      manager: department.manager,
-      description: department.description,
-      icon: department.icon,
-      color: department.color,
-      phone: department.phone || '',
-      email: department.email || '',
-      responsibilities: department.responsibilities || [],
-    }
-  }
-
-  // 轉換組織架構圖資料格式
-  function transformOrganizationChart (chartData) {
-    // 將資料庫中的陣列轉換為前端需要的物件格式
-    const chart = {}
-    chartData.forEach(item => {
-      if (item.position === 'chairman') {
-        chart.chairman = {
-          name: item.name,
-          title: item.title,
-          icon: item.icon,
-          color: item.color,
-        }
-      } else if (item.position === 'viceChairman') {
-        chart.viceChairman = {
-          name: item.name,
-          title: item.title,
-          icon: item.icon,
-          color: item.color,
-        }
-      }
-    })
-    return chart
-  }
-
-  // 從 Supabase 載入部門
-  async function loadDepartments () {
-    try {
-      const { data, error: fetchError } = await supabase
-        .from('departments')
-        .select('*')
-        .order('display_order', { ascending: true })
-
-      if (fetchError) throw fetchError
-
-      if (data) {
-        departments.value = data.map(department => transformDepartment(department))
-      }
-    } catch (error_) {
-      console.error('載入部門失敗:', error_)
-      throw error_
-    }
-  }
-
-  // 從 Supabase 載入組織架構圖
-  async function loadOrganizationChart () {
-    try {
-      const { data, error: fetchError } = await supabase
-        .from('organization_chart')
-        .select('*')
-        .order('position')
-
-      if (fetchError) throw fetchError
-
-      if (data && data.length > 0) {
-        organizationChart.value = transformOrganizationChart(data)
-      }
-    } catch (error_) {
-      console.error('載入組織架構圖失敗:', error_)
-      throw error_
-    }
-  }
-
-  // 從 Supabase 獲取組織資料
+  // 從 API 獲取組織資料
   async function loadOrganizationData () {
     loading.value = true
     error.value = null
 
     try {
-      // 並行載入兩個資料表
-      await Promise.all([
-        loadDepartments(),
-        loadOrganizationChart(),
-      ])
+      const data = await fetchOrganizationData()
+      departments.value = data.departments
+      organizationChart.value = data.organizationChart
     } catch (error_) {
       error.value = error_.message || '載入資料時發生錯誤'
       console.error('載入組織資料失敗:', error_)
