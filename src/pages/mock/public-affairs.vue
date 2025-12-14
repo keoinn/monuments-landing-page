@@ -1,6 +1,6 @@
 <script setup>
   import { computed, onMounted, ref } from 'vue'
-  import { supabase } from '@/lib/supabaseClient'
+  import { fetchPublicAffairsData } from '@/apis/mocks/publicAffairsApi'
 
   const formDocuments = ref([])
   const contactInfo = ref([])
@@ -9,108 +9,15 @@
   const currentPage = ref(1)
   const itemsPerPage = 6
 
-  // Storage bucket 名稱
-  const BUCKET_NAME = 'wanxuanju-files'
-
-  // 格式化日期
-  function formatDate (dateString) {
-    if (!dateString) return ''
-    const date = new Date(dateString)
-    return date.toLocaleDateString('zh-TW', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-    })
-  }
-
-  // 轉換表單文件資料格式
-  function transformFormDocument (document) {
-    // 處理 URL：如果有 storage_path，生成公開 URL；否則使用 url 欄位
-    let documentUrl = document.url || ''
-    if (document.storage_path) {
-      const { data: { publicUrl } } = supabase.storage
-        .from(BUCKET_NAME)
-        .getPublicUrl(document.storage_path)
-      documentUrl = publicUrl
-    }
-
-    return {
-      id: document.id,
-      title: document.title,
-      description: document.description,
-      date: formatDate(document.date),
-      type: document.type,
-      icon: document.icon,
-      color: document.color,
-      category: document.category || '',
-      url: documentUrl,
-    }
-  }
-
-  // 轉換聯絡資訊資料格式
-  function transformContactInfo (contact) {
-    return {
-      id: contact.id,
-      title: contact.title,
-      description: contact.description,
-      value: contact.value,
-      icon: contact.icon,
-      color: contact.color,
-      action: contact.action,
-      buttonText: contact.button_text,
-    }
-  }
-
-  // 從 Supabase 載入表單文件
-  async function loadFormDocuments () {
-    try {
-      const { data, error: fetchError } = await supabase
-        .from('form_documents')
-        .select('*')
-        .order('display_order', { ascending: true })
-        .order('date', { ascending: false })
-
-      if (fetchError) throw fetchError
-
-      if (data) {
-        formDocuments.value = data.map(document => transformFormDocument(document))
-      }
-    } catch (error_) {
-      console.error('載入表單文件失敗:', error_)
-      throw error_
-    }
-  }
-
-  // 從 Supabase 載入聯絡資訊
-  async function loadContactInfo () {
-    try {
-      const { data, error: fetchError } = await supabase
-        .from('contact_info')
-        .select('*')
-        .order('display_order', { ascending: true })
-
-      if (fetchError) throw fetchError
-
-      if (data) {
-        contactInfo.value = data.map(contact => transformContactInfo(contact))
-      }
-    } catch (error_) {
-      console.error('載入聯絡資訊失敗:', error_)
-      throw error_
-    }
-  }
-
-  // 從 Supabase 獲取公務資訊資料
+  // 從 API 獲取公務資訊資料
   async function loadPublicAffairsData () {
     loading.value = true
     error.value = null
 
     try {
-      // 並行載入兩個資料表
-      await Promise.all([
-        loadFormDocuments(),
-        loadContactInfo(),
-      ])
+      const data = await fetchPublicAffairsData()
+      formDocuments.value = data.formDocuments
+      contactInfo.value = data.contactInfo
     } catch (error_) {
       error.value = error_.message || '載入資料時發生錯誤'
       console.error('載入公務資訊資料失敗:', error_)

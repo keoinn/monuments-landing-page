@@ -161,6 +161,35 @@
             elevation="2"
             hover
             rounded="lg"
+            @click="router.push('/admin/public-affairs')"
+          >
+            <v-card-text class="pa-6 text-center">
+              <v-icon
+                class="mb-4"
+                color="teal"
+                icon="mdi-file-document-multiple"
+                size="48"
+              />
+              <h3 class="text-h5 font-weight-bold mb-2">
+                公務資訊管理
+              </h3>
+              <p class="text-body-2 text-medium-emphasis">
+                管理表單文件與聯絡資訊
+              </p>
+            </v-card-text>
+          </v-card>
+        </v-col>
+
+        <v-col
+          cols="12"
+          lg="4"
+          md="6"
+        >
+          <v-card
+            class="h-100"
+            elevation="2"
+            hover
+            rounded="lg"
           >
             <v-card-text class="pa-6 text-center">
               <v-icon
