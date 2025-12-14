@@ -37,8 +37,8 @@
       <v-row class="mt-4">
         <v-col
           cols="12"
-          md="6"
           lg="4"
+          md="6"
         >
           <v-card
             class="h-100"
@@ -66,8 +66,8 @@
 
         <v-col
           cols="12"
-          md="6"
           lg="4"
+          md="6"
         >
           <v-card
             class="h-100"
@@ -95,8 +95,37 @@
 
         <v-col
           cols="12"
-          md="6"
           lg="4"
+          md="6"
+        >
+          <v-card
+            class="h-100"
+            elevation="2"
+            hover
+            rounded="lg"
+            @click="router.push('/admin/directors')"
+          >
+            <v-card-text class="pa-6 text-center">
+              <v-icon
+                class="mb-4"
+                color="info"
+                icon="mdi-account-tie"
+                size="48"
+              />
+              <h3 class="text-h5 font-weight-bold mb-2">
+                委員會管理
+              </h3>
+              <p class="text-body-2 text-medium-emphasis">
+                管理理事會成員、結構與會議行程
+              </p>
+            </v-card-text>
+          </v-card>
+        </v-col>
+
+        <v-col
+          cols="12"
+          lg="4"
+          md="6"
         >
           <v-card
             class="h-100"
@@ -123,8 +152,8 @@
 
         <v-col
           cols="12"
-          md="6"
           lg="4"
+          md="6"
         >
           <v-card
             class="h-100"
@@ -152,4 +181,3 @@
     </v-container>
   </div>
 </template>
-

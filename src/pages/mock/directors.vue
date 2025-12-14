@@ -1,6 +1,6 @@
 <script setup>
   import { onMounted, ref } from 'vue'
-  import { supabase } from '@/lib/supabaseClient'
+  import { fetchDirectorsData } from '@/apis/mocks/directorsApi'
 
   const boardMembers = ref([])
   const boardStructure = ref([])
@@ -8,143 +8,16 @@
   const loading = ref(false)
   const error = ref(null)
 
-  // Storage bucket 名稱
-  const BUCKET_NAME = 'wanxuanju-files'
-
-  // 格式化日期
-  function formatDate (date) {
-    if (!date) return ''
-    const d = new Date(date)
-    return d.toLocaleDateString('zh-TW', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-    })
-  }
-
-  // 轉換理事會成員資料格式
-  function transformBoardMember (member) {
-    // 處理照片 URL：優先使用 photo_url，如果有 storage_path 則生成公開 URL
-    let photoUrl = null
-    if (member.photo_url) {
-      photoUrl = member.photo_url
-    } else if (member.storage_path) {
-      // 從 Supabase Storage 生成公開 URL
-      const { data: { publicUrl } } = supabase.storage
-        .from(BUCKET_NAME)
-        .getPublicUrl(member.storage_path)
-      photoUrl = publicUrl
-    }
-
-    return {
-      name: member.name,
-      title: member.title,
-      role: member.role,
-      photo: photoUrl,
-      description: member.description,
-      education: member.education,
-      expertise: member.expertise || [],
-      experience: member.experience || [],
-      email: member.email,
-      linkedin: member.linkedin,
-    }
-  }
-
-  // 轉換理事會結構資料格式
-  function transformBoardStructure (item) {
-    return {
-      title: item.title,
-      description: item.description,
-      icon: item.icon || 'mdi-account-group',
-      color: item.color || 'primary',
-      count: item.count || 0,
-      unit: item.unit || '人',
-    }
-  }
-
-  // 轉換會議行程資料格式
-  function transformMeetingSchedule (item) {
-    return {
-      date: formatDate(item.date),
-      title: item.title,
-      description: item.description,
-      time: item.time || '',
-      location: item.location || '',
-      icon: item.icon || 'mdi-calendar',
-      color: item.color || 'primary',
-    }
-  }
-
-  // 從 Supabase 載入理事會成員
-  async function loadBoardMembers () {
-    try {
-      const { data, error: fetchError } = await supabase
-        .from('board_members')
-        .select('*')
-        .order('display_order', { ascending: true })
-
-      if (fetchError) throw fetchError
-
-      if (data) {
-        boardMembers.value = data.map(member => transformBoardMember(member))
-      }
-    } catch (error_) {
-      console.error('載入理事會成員失敗:', error_)
-      throw error_
-    }
-  }
-
-  // 從 Supabase 載入理事會結構
-  async function loadBoardStructure () {
-    try {
-      const { data, error: fetchError } = await supabase
-        .from('board_structure')
-        .select('*')
-        .order('display_order', { ascending: true })
-
-      if (fetchError) throw fetchError
-
-      if (data) {
-        boardStructure.value = data.map(item => transformBoardStructure(item))
-      }
-    } catch (error_) {
-      console.error('載入理事會結構失敗:', error_)
-      throw error_
-    }
-  }
-
-  // 從 Supabase 載入會議行程
-  async function loadMeetingSchedule () {
-    try {
-      const { data, error: fetchError } = await supabase
-        .from('meeting_schedule')
-        .select('*')
-        .order('date', { ascending: false })
-        .order('display_order', { ascending: true })
-
-      if (fetchError) throw fetchError
-
-      if (data) {
-        meetingSchedule.value = data.map(item => transformMeetingSchedule(item))
-      }
-    } catch (error_) {
-      console.error('載入會議行程失敗:', error_)
-      throw error_
-    }
-  }
-
-  // 從 Supabase 獲取理事會資料
+  // 從 API 獲取理事會資料
   async function loadDirectorsData () {
     loading.value = true
     error.value = null
 
     try {
-      // 並行載入三個資料表
-      await Promise.all([
-        loadBoardMembers(),
-        loadBoardStructure(),
-        loadMeetingSchedule(),
-      ])
+      const data = await fetchDirectorsData()
+      boardMembers.value = data.boardMembers
+      boardStructure.value = data.boardStructure
+      meetingSchedule.value = data.meetingSchedule
     } catch (error_) {
       error.value = error_.message || '載入資料時發生錯誤'
       console.error('載入理事會資料失敗:', error_)
