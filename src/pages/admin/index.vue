@@ -218,6 +218,7 @@
             elevation="2"
             hover
             rounded="lg"
+            @click="router.push('/admin/settings')"
           >
             <v-card-text class="pa-6 text-center">
               <v-icon

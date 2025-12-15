@@ -79,3 +79,4 @@ ON CONFLICT (module, cate, key) DO UPDATE SET
 --   .eq('module', 'publicAffairs')
 --   .eq('cate', 'documentTypeOptions')
 --   .order('key');
+

@@ -52,3 +52,4 @@ ON CONFLICT DO NOTHING;
 --   .from('contact_info')
 --   .select('*')
 --   .order('display_order', { ascending: true });
+

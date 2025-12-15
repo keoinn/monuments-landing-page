@@ -33,6 +33,7 @@ declare module 'vue-router/auto-routes' {
     '/admin/public-affairs/': RouteRecordInfo<'/admin/public-affairs/', '/admin/public-affairs', Record<never, never>, Record<never, never>>,
     '/admin/register': RouteRecordInfo<'/admin/register', '/admin/register', Record<never, never>, Record<never, never>>,
     '/admin/reset-password': RouteRecordInfo<'/admin/reset-password', '/admin/reset-password', Record<never, never>, Record<never, never>>,
+    '/admin/settings/': RouteRecordInfo<'/admin/settings/', '/admin/settings', Record<never, never>, Record<never, never>>,
     '/announcements': RouteRecordInfo<'/announcements', '/announcements', Record<never, never>, Record<never, never>>,
     '/directors': RouteRecordInfo<'/directors', '/directors', Record<never, never>, Record<never, never>>,
     '/history': RouteRecordInfo<'/history', '/history', Record<never, never>, Record<never, never>>,
