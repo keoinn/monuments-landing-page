@@ -153,3 +153,5 @@ CREATE POLICY "contact_info_delete_authenticated"
   FOR DELETE
   USING (auth.role() = 'authenticated');
 
+
+

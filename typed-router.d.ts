@@ -36,6 +36,7 @@ declare module 'vue-router/auto-routes' {
     '/admin/settings/': RouteRecordInfo<'/admin/settings/', '/admin/settings', Record<never, never>, Record<never, never>>,
     '/announcements': RouteRecordInfo<'/announcements', '/announcements', Record<never, never>, Record<never, never>>,
     '/directors': RouteRecordInfo<'/directors', '/directors', Record<never, never>, Record<never, never>>,
+    '/editor.vue 20-29-14-983': RouteRecordInfo<'/editor.vue 20-29-14-983', '/editor/vue 20-29-14-983', Record<never, never>, Record<never, never>>,
     '/history': RouteRecordInfo<'/history', '/history', Record<never, never>, Record<never, never>>,
     '/mock/announcements': RouteRecordInfo<'/mock/announcements', '/mock/announcements', Record<never, never>, Record<never, never>>,
     '/mock/directors': RouteRecordInfo<'/mock/directors', '/mock/directors', Record<never, never>, Record<never, never>>,
