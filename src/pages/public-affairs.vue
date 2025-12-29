@@ -213,43 +213,43 @@
 
       <v-row v-if="!loading && !error">
         <v-col cols="12" md="10" offset-md="1">
-          <v-card elevation="2" rounded="lg">
-            <v-card-text class="pa-0">
-              <v-list>
-                <v-list-item
+            <v-card elevation="2" rounded="lg">
+              <v-card-text class="pa-0">
+                <v-list>
+                  <v-list-item
                   v-for="(document, index) in paginatedDocuments"
-                  :key="index"
-                  class="border-b"
-                >
-                  <template #prepend>
-                    <v-icon
-                      :color="document.color"
-                      :icon="document.icon"
-                      size="24"
-                    />
-                  </template>
+                    :key="index"
+                    class="border-b"
+                  >
+                    <template #prepend>
+                      <v-icon
+                        :color="document.color"
+                        :icon="document.icon"
+                        size="24"
+                      />
+                    </template>
 
-                  <v-list-item-title class="text-h6 font-weight-bold mb-1">
-                    {{ document.title }}
-                  </v-list-item-title>
+                    <v-list-item-title class="text-h6 font-weight-bold mb-1">
+                      {{ document.title }}
+                    </v-list-item-title>
 
-                  <v-list-item-subtitle class="text-body-2 text-medium-emphasis mb-2">
-                    {{ document.description }}
-                  </v-list-item-subtitle>
+                    <v-list-item-subtitle class="text-body-2 text-medium-emphasis mb-2">
+                      {{ document.description }}
+                    </v-list-item-subtitle>
 
-                  <div class="d-flex align-center text-caption text-medium-emphasis">
-                    <v-icon
-                      class="mr-1"
-                      icon="mdi-calendar"
-                      size="14"
-                    />
-                    {{ document.date }}
-                    <v-icon
-                      class="mr-1 ml-3"
-                      icon="mdi-file-document"
-                      size="14"
-                    />
-                    {{ document.type }}
+                    <div class="d-flex align-center text-caption text-medium-emphasis">
+                      <v-icon
+                        class="mr-1"
+                        icon="mdi-calendar"
+                        size="14"
+                      />
+                      {{ document.date }}
+                      <v-icon
+                        class="mr-1 ml-3"
+                        icon="mdi-file-document"
+                        size="14"
+                      />
+                      {{ document.type }}
                     <v-chip
                       v-if="document.category"
                       class="ml-3"
@@ -259,26 +259,26 @@
                     >
                       {{ document.category }}
                     </v-chip>
-                  </div>
+                    </div>
 
-                  <template #append>
-                    <v-btn
-                      color="primary"
-                      :href="document.url"
-                      prepend-icon="mdi-download"
-                      size="small"
-                      target="_blank"
-                      variant="text"
-                    >
-                      下載
-                    </v-btn>
-                  </template>
-                </v-list-item>
-              </v-list>
-            </v-card-text>
-          </v-card>
-        </v-col>
-      </v-row>
+                    <template #append>
+                      <v-btn
+                        color="primary"
+                        :href="document.url"
+                        prepend-icon="mdi-download"
+                        size="small"
+                        target="_blank"
+                        variant="text"
+                      >
+                        下載
+                      </v-btn>
+                    </template>
+                  </v-list-item>
+                </v-list>
+              </v-card-text>
+            </v-card>
+          </v-col>
+        </v-row>
 
       <!-- Pagination -->
       <v-row v-if="!loading && !error && totalPages > 1" justify="center">
@@ -360,7 +360,7 @@
   background-size: cover;
   background-position: center 20%;
   background-repeat: no-repeat;
-
+  
   &::before {
     content: '';
     position: absolute;

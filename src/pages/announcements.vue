@@ -181,8 +181,8 @@
       filtered = selectedCategory.value === '重要公告'
         ? filtered.filter(announcement => announcement.isImportant)
         : filtered.filter(announcement =>
-          announcement.category === selectedCategory.value,
-        )
+        announcement.category === selectedCategory.value,
+      )
     }
 
     // 狀態篩選
@@ -562,7 +562,7 @@
   background-size: cover;
   background-position: center 20%;
   background-repeat: no-repeat;
-
+  
   &::before {
     content: '';
     position: absolute;

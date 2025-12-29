@@ -2,6 +2,7 @@
   import { computed, ref } from 'vue'
   import { useRouter, useRoute } from 'vue-router'
   import { useAuthStore } from '@/stores/auth'
+  import { getRoleDisplayText } from '@/utils/roleHelper'
 
   const router = useRouter()
   const route = useRoute()
@@ -9,30 +10,64 @@
 
   const drawer = ref(false)
 
-  // 導航選單
-  const navItems = [
+  // 所有導航選單項目
+  const allNavItems = [
     {
       title: '儀表板',
       icon: 'mdi-view-dashboard',
       to: '/admin',
       exact: true,
+      roles: ['admin', 'user'], // 所有角色都可以訪問儀表板
     },
     {
       title: '公告管理',
       icon: 'mdi-bullhorn',
       to: '/admin/announcements',
+      roles: ['admin', 'user'],
+    },
+    {
+      title: '歷史沿革管理',
+      icon: 'mdi-history',
+      to: '/admin/history',
+      roles: ['admin', 'user'],
+    },
+    {
+      title: '委員會管理',
+      icon: 'mdi-account-tie',
+      to: '/admin/directors',
+      roles: ['admin', 'user'],
+    },
+    {
+      title: '組織架構管理',
+      icon: 'mdi-office-building',
+      to: '/admin/organization',
+      roles: ['admin', 'user'],
+    },
+    {
+      title: '公務資訊管理',
+      icon: 'mdi-file-document-multiple',
+      to: '/admin/public-affairs',
+      roles: ['admin', 'user'],
     },
     {
       title: '用戶管理',
       icon: 'mdi-account-group',
-      to: '/admin/users',
+      to: '/admin/user',
+      roles: ['admin'], // 只有管理員可以訪問
     },
     {
       title: '系統設定',
       icon: 'mdi-cog',
       to: '/admin/settings',
+      roles: ['admin'], // 只有管理員可以訪問
     },
   ]
+
+  // 根據用戶角色過濾顯示的導航選單項目
+  const navItems = computed(() => {
+    const userRole = authStore.userMetaInfo?.role || 'user'
+    return allNavItems.filter(item => item.roles.includes(userRole))
+  })
 
   // 檢查當前路由是否為活動狀態
   const isActive = (item) => {
@@ -50,7 +85,11 @@
 
   // 用戶資訊
   const userEmail = computed(() => authStore.user?.email || '')
-  const userName = computed(() => authStore.user?.user_metadata?.name || userEmail.value)
+  const userName = computed(() => authStore.userName)
+  const userRole = computed(() => {
+    if (!authStore.userMetaInfo) return ''
+    return getRoleDisplayText(authStore.userMetaInfo.role)
+  })
 </script>
 
 <template>
@@ -98,6 +137,15 @@
             </div>
             <div class="text-body-2 font-weight-medium">
               {{ userName }}
+            </div>
+            <div v-if="userRole" class="mt-1">
+              <v-chip
+                :color="authStore.userMetaInfo?.role === 'admin' ? 'error' : 'primary'"
+                size="small"
+                variant="tonal"
+              >
+                {{ userRole }}
+              </v-chip>
             </div>
           </div>
           <v-btn
@@ -149,6 +197,15 @@
             </v-list-item-title>
             <v-list-item-subtitle class="text-caption">
               {{ userEmail }}
+            </v-list-item-subtitle>
+            <v-list-item-subtitle v-if="userRole" class="text-caption mt-1">
+              <v-chip
+                :color="authStore.userMetaInfo?.role === 'admin' ? 'error' : 'primary'"
+                size="x-small"
+                variant="tonal"
+              >
+                {{ userRole }}
+              </v-chip>
             </v-list-item-subtitle>
           </v-list-item>
           <v-divider />

@@ -842,12 +842,12 @@
   <v-container class="py-8">
     <!-- 頁面標題 -->
     <div class="mb-6">
-      <h1 class="text-h4 font-weight-bold mb-2">
-        歷史沿革管理
-      </h1>
-      <p class="text-body-2 text-medium-emphasis">
-        管理時間軸事件與歷史意義內容
-      </p>
+        <h1 class="text-h4 font-weight-bold mb-2">
+          歷史沿革管理
+        </h1>
+        <p class="text-body-2 text-medium-emphasis">
+          管理時間軸事件與歷史意義內容
+        </p>
     </div>
 
     <!-- Timeline 事件區塊 -->
@@ -855,19 +855,19 @@
       <v-card-title class="d-flex align-center justify-space-between">
         <div>
           <h2 class="text-h5 font-weight-bold">
-            時間軸事件
-          </h2>
+          時間軸事件
+              </h2>
           <p class="text-body-2 text-medium-emphasis mt-1">
             管理歷史時間軸上的重要事件
           </p>
         </div>
-        <v-btn
-          color="primary"
-          prepend-icon="mdi-plus"
+              <v-btn
+                color="primary"
+                prepend-icon="mdi-plus"
           @click="openNewTimelineForm"
-        >
-          新增事件
-        </v-btn>
+              >
+                新增事件
+              </v-btn>
       </v-card-title>
 
       <v-divider />
@@ -887,81 +887,81 @@
 
       <!-- Timeline 載入中 -->
       <div v-if="timelineLoading" class="text-center py-12">
-        <v-progress-circular
-          color="primary"
-          indeterminate
-          size="64"
-        />
-        <p class="mt-4 text-body-1 text-medium-emphasis">
-          載入中...
-        </p>
-      </div>
+              <v-progress-circular
+                color="primary"
+                indeterminate
+                size="64"
+              />
+              <p class="mt-4 text-body-1 text-medium-emphasis">
+                載入中...
+              </p>
+            </div>
 
       <!-- Timeline 列表 -->
-      <v-table v-else>
-        <thead>
-          <tr>
-            <th class="text-left">
-              年份
-            </th>
-            <th class="text-left">
-              標題
-            </th>
-            <th class="text-left">
-              描述
-            </th>
-            <th class="text-center">
-              圖示/顏色
-            </th>
-            <th class="text-center">
-              圖片
-            </th>
-            <th class="text-center">
-              順序
-            </th>
-            <th class="text-center">
-              操作
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-if="timelineEvents.length === 0"
-            class="text-center"
-          >
+            <v-table v-else>
+              <thead>
+                <tr>
+                  <th class="text-left">
+                    年份
+                  </th>
+                  <th class="text-left">
+                    標題
+                  </th>
+                  <th class="text-left">
+                    描述
+                  </th>
+                  <th class="text-center">
+                    圖示/顏色
+                  </th>
+                  <th class="text-center">
+                    圖片
+                  </th>
+                  <th class="text-center">
+                    順序
+                  </th>
+                  <th class="text-center">
+                    操作
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  v-if="timelineEvents.length === 0"
+                  class="text-center"
+                >
             <td class="py-8 text-medium-emphasis" colspan="7">
-              目前沒有時間軸事件
-            </td>
-          </tr>
-          <tr
-            v-for="event in timelineEvents"
-            :key="event.id"
-          >
-            <td>
-              <v-chip
+                    目前沒有時間軸事件
+                  </td>
+                </tr>
+                <tr
+                  v-for="event in timelineEvents"
+                  :key="event.id"
+                >
+                  <td>
+                    <v-chip
                 :color="getColorVariant(event.color)"
-                size="small"
-                variant="tonal"
-              >
-                {{ event.year }}
-              </v-chip>
-            </td>
-            <td>
-              <div class="font-weight-medium">
-                {{ event.title }}
-              </div>
-            </td>
-            <td>
+                      size="small"
+                      variant="tonal"
+                    >
+                      {{ event.year }}
+                    </v-chip>
+                  </td>
+                  <td>
+                    <div class="font-weight-medium">
+                      {{ event.title }}
+                    </div>
+                  </td>
+                  <td>
               <div class="text-body-2 text-medium-emphasis">
                 {{ event.description?.slice(0, 50) }}{{ event.description?.length > 50 ? '...' : '' }}
-              </div>
-            </td>
-            <td class="text-center">
+                    </div>
+                  </td>
+                  <td class="text-center">
               <v-icon :color="getColorVariant(event.color)">
                 {{ event.icon }}
-              </v-icon>
-            </td>
-            <td class="text-center">
+                    </v-icon>
+                  </td>
+                  <td class="text-center">
               <v-avatar
                 v-if="getImageUrl(event)"
                 size="40"
@@ -969,44 +969,44 @@
               >
                 <v-img :src="getImageUrl(event)" />
               </v-avatar>
-              <span v-else class="text-medium-emphasis">-</span>
-            </td>
-            <td class="text-center">
-              {{ event.display_order }}
-            </td>
-            <td class="text-center">
-              <v-btn
-                icon
-                size="small"
-                variant="text"
+                    <span v-else class="text-medium-emphasis">-</span>
+                  </td>
+                  <td class="text-center">
+                    {{ event.display_order }}
+                  </td>
+                  <td class="text-center">
+                    <v-btn
+                      icon
+                      size="small"
+                      variant="text"
                 @click="openEditTimelineForm(event)"
-              >
-                <v-icon icon="mdi-pencil" />
-                <v-tooltip activator="parent">
-                  編輯
-                </v-tooltip>
-              </v-btn>
-              <v-btn
-                icon
-                size="small"
-                variant="text"
-                color="error"
-                @click="deleteTimelineEvent(event)"
-              >
-                <v-icon icon="mdi-delete" />
-                <v-tooltip activator="parent">
-                  刪除
-                </v-tooltip>
-              </v-btn>
-            </td>
-          </tr>
-        </tbody>
-      </v-table>
+                    >
+                      <v-icon icon="mdi-pencil" />
+                      <v-tooltip activator="parent">
+                        編輯
+                      </v-tooltip>
+                    </v-btn>
+                    <v-btn
+                      icon
+                      size="small"
+                      variant="text"
+                      color="error"
+                      @click="deleteTimelineEvent(event)"
+                    >
+                      <v-icon icon="mdi-delete" />
+                      <v-tooltip activator="parent">
+                        刪除
+                      </v-tooltip>
+                    </v-btn>
+                  </td>
+                </tr>
+              </tbody>
+            </v-table>
 
       <!-- Timeline 統計資訊 -->
       <v-card-text v-if="!timelineLoading" class="text-body-2 text-medium-emphasis">
-        共 {{ timelineEvents.length }} 筆時間軸事件
-      </v-card-text>
+              共 {{ timelineEvents.length }} 筆時間軸事件
+          </v-card-text>
     </v-card>
 
     <!-- 歷史意義區塊 -->
@@ -1015,18 +1015,18 @@
         <div>
           <h2 class="text-h5 font-weight-bold">
             歷史意義
-          </h2>
+              </h2>
           <p class="text-body-2 text-medium-emphasis mt-1">
             管理古蹟的歷史意義與文化價值說明
           </p>
         </div>
-        <v-btn
-          color="primary"
-          prepend-icon="mdi-plus"
+              <v-btn
+                color="primary"
+                prepend-icon="mdi-plus"
           @click="openNewSignificanceForm"
-        >
-          新增項目
-        </v-btn>
+              >
+                新增項目
+              </v-btn>
       </v-card-title>
 
       <v-divider />
@@ -1046,68 +1046,68 @@
 
       <!-- 歷史意義載入中 -->
       <div v-if="significanceLoading" class="text-center py-12">
-        <v-progress-circular
-          color="primary"
-          indeterminate
-          size="64"
-        />
-        <p class="mt-4 text-body-1 text-medium-emphasis">
-          載入中...
-        </p>
-      </div>
+              <v-progress-circular
+                color="primary"
+                indeterminate
+                size="64"
+              />
+              <p class="mt-4 text-body-1 text-medium-emphasis">
+                載入中...
+              </p>
+            </div>
 
-      <!-- 歷史意義列表 -->
-      <v-table v-else>
-        <thead>
-          <tr>
-            <th class="text-left">
-              標題
-            </th>
-            <th class="text-left">
-              描述
-            </th>
-            <th class="text-center">
-              圖示/顏色
-            </th>
+            <!-- 歷史意義列表 -->
+            <v-table v-else>
+              <thead>
+                <tr>
+                  <th class="text-left">
+                    標題
+                  </th>
+                  <th class="text-left">
+                    描述
+                  </th>
+                  <th class="text-center">
+                    圖示/顏色
+                  </th>
             <th class="text-center">
               圖片
             </th>
-            <th class="text-center">
-              順序
-            </th>
-            <th class="text-center">
-              操作
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-if="historicalSignificance.length === 0"
-            class="text-center"
-          >
+                  <th class="text-center">
+                    順序
+                  </th>
+                  <th class="text-center">
+                    操作
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  v-if="historicalSignificance.length === 0"
+                  class="text-center"
+                >
             <td class="py-8 text-medium-emphasis" colspan="6">
-              目前沒有歷史意義項目
-            </td>
-          </tr>
-          <tr
-            v-for="item in historicalSignificance"
-            :key="item.id"
-          >
-            <td>
-              <div class="font-weight-medium">
-                {{ item.title }}
-              </div>
-            </td>
-            <td>
+                    目前沒有歷史意義項目
+                  </td>
+                </tr>
+                <tr
+                  v-for="item in historicalSignificance"
+                  :key="item.id"
+                >
+                  <td>
+                    <div class="font-weight-medium">
+                      {{ item.title }}
+                    </div>
+                  </td>
+                  <td>
               <div class="text-body-2 text-medium-emphasis">
                 {{ item.description?.slice(0, 80) }}{{ item.description?.length > 80 ? '...' : '' }}
-              </div>
-            </td>
-            <td class="text-center">
+                    </div>
+                  </td>
+                  <td class="text-center">
               <v-icon :color="getColorVariant(item.color)">
                 {{ item.icon }}
-              </v-icon>
-            </td>
+                    </v-icon>
+                  </td>
             <td class="text-center">
               <v-avatar
                 v-if="getImageUrl(item)"
@@ -1118,42 +1118,42 @@
               </v-avatar>
               <span v-else class="text-medium-emphasis">-</span>
             </td>
-            <td class="text-center">
-              {{ item.display_order }}
-            </td>
-            <td class="text-center">
-              <v-btn
-                icon
-                size="small"
-                variant="text"
+                  <td class="text-center">
+                    {{ item.display_order }}
+                  </td>
+                  <td class="text-center">
+                    <v-btn
+                      icon
+                      size="small"
+                      variant="text"
                 @click="openEditSignificanceForm(item)"
-              >
-                <v-icon icon="mdi-pencil" />
-                <v-tooltip activator="parent">
-                  編輯
-                </v-tooltip>
-              </v-btn>
-              <v-btn
-                icon
-                size="small"
-                variant="text"
-                color="error"
-                @click="deleteSignificance(item)"
-              >
-                <v-icon icon="mdi-delete" />
-                <v-tooltip activator="parent">
-                  刪除
-                </v-tooltip>
-              </v-btn>
-            </td>
-          </tr>
-        </tbody>
-      </v-table>
+                    >
+                      <v-icon icon="mdi-pencil" />
+                      <v-tooltip activator="parent">
+                        編輯
+                      </v-tooltip>
+                    </v-btn>
+                    <v-btn
+                      icon
+                      size="small"
+                      variant="text"
+                      color="error"
+                      @click="deleteSignificance(item)"
+                    >
+                      <v-icon icon="mdi-delete" />
+                      <v-tooltip activator="parent">
+                        刪除
+                      </v-tooltip>
+                    </v-btn>
+                  </td>
+                </tr>
+              </tbody>
+            </v-table>
 
       <!-- 歷史意義統計資訊 -->
       <v-card-text v-if="!significanceLoading" class="text-body-2 text-medium-emphasis">
-        共 {{ historicalSignificance.length }} 筆歷史意義項目
-      </v-card-text>
+              共 {{ historicalSignificance.length }} 筆歷史意義項目
+          </v-card-text>
     </v-card>
 
     <!-- Timeline 刪除確認對話框 -->

@@ -6,23 +6,25 @@
     <a
       v-for="item in items"
       :key="item.title"
-      class="d-inline-block mx-2 social-link"
+      class="d-inline-block mx-2 social-link text-decoration-none"
       :href="item.href"
       rel="noopener noreferrer"
       target="_blank"
       :title="item.title"
     >
       <v-icon
+        class="mr-1"
         :icon="item.icon"
-        :size="item.icon === '$vuetify' ? 24 : 16"
+        size="24"
       />
+      <span class="social-link-text">{{ item.title }}</span>
     </a>
 
     <div
       class="text-caption text-disabled"
       style="position: absolute; right: 16px;"
     >
-      &copy; 2016-{{ (new Date()).getFullYear() }} <span class="d-none d-sm-inline-block">Vuetify, LLC</span>
+      &copy; 2024-{{ (new Date()).getFullYear() }} <span class="d-none d-sm-inline-block">Yavik Tech</span>
       —
       <a
         class="text-decoration-none on-surface"
@@ -37,7 +39,14 @@
 </template>
 
 <script setup>
-  const items = [
+  const items = ref([
+    {
+      title: '青錢萬選-萬選居',
+      icon: `mdi-facebook`,
+      href: 'https://www.facebook.com/profile.php?id=100064501097860',
+    },
+  ])
+  const _items_dev = ref([
     {
       title: 'Vuetify Documentation',
       icon: `$vuetify`,
@@ -68,14 +77,30 @@
       icon: `mdi-reddit`,
       href: 'https://reddit.com/r/vuetifyjs',
     },
-  ]
+  ])
 </script>
 <style scoped lang="sass">
-  .social-link :deep(.v-icon)
-    color: rgba(var(--v-theme-on-background), var(--v-disabled-opacity))
+  .social-link
+    color: #1976d2
     text-decoration: none
     transition: .2s ease-in-out
 
     &:hover
-      color: rgba(25, 118, 210, 1)
+      color: #1565c0
+      text-decoration: none
+
+    :deep(.v-icon)
+      color: #1976d2
+      transition: .2s ease-in-out
+
+    &:hover :deep(.v-icon)
+      color: #1565c0
+
+  .social-link-text
+    font-size: 16px
+    color: #1976d2
+    transition: .2s ease-in-out
+
+  .social-link:hover .social-link-text
+    color: #1565c0
 </style>

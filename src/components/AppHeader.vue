@@ -2,6 +2,7 @@
   import { computed, ref } from 'vue'
   import { useRouter } from 'vue-router'
   import { useAuthStore } from '@/stores/auth'
+  import { getRoleDisplayText } from '@/utils/roleHelper'
 
   const router = useRouter()
   const authStore = useAuthStore()
@@ -23,10 +24,10 @@
 
   // 用戶資訊
   const userEmail = computed(() => authStore.user?.email || '')
-  const userName = computed(() => {
-    return authStore.user?.user_metadata?.name
-      || authStore.user?.email?.split('@')[0]
-      || '用戶'
+  const userName = computed(() => authStore.userName)
+  const userRole = computed(() => {
+    if (!authStore.userMetaInfo) return ''
+    return getRoleDisplayText(authStore.userMetaInfo.role)
   })
 
   // 登出處理
@@ -126,6 +127,15 @@
               <v-list-item-subtitle class="text-caption">
                 {{ userEmail }}
               </v-list-item-subtitle>
+              <v-list-item-subtitle v-if="userRole" class="text-caption mt-1">
+                <v-chip
+                  :color="authStore.userMetaInfo?.role === 'admin' ? 'error' : 'primary'"
+                  size="x-small"
+                  variant="tonal"
+                >
+                  {{ userRole }}
+                </v-chip>
+              </v-list-item-subtitle>
             </v-list-item>
             <v-divider />
             <v-list-item
@@ -199,6 +209,15 @@
             </v-list-item-title>
             <v-list-item-subtitle class="text-caption">
               {{ userEmail }}
+            </v-list-item-subtitle>
+            <v-list-item-subtitle v-if="userRole" class="text-caption mt-1">
+              <v-chip
+                :color="authStore.userMetaInfo?.role === 'admin' ? 'error' : 'primary'"
+                size="x-small"
+                variant="tonal"
+              >
+                {{ userRole }}
+              </v-chip>
             </v-list-item-subtitle>
           </v-list-item>
           <v-list-item

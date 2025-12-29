@@ -1,5 +1,5 @@
 <script setup>
-  import { onMounted } from 'vue'
+  import { computed, onMounted } from 'vue'
   import { useRouter } from 'vue-router'
   import { useAuthStore } from '@/stores/auth'
 
@@ -10,6 +10,79 @@
 
   const router = useRouter()
   const authStore = useAuthStore()
+
+  // 所有管理功能配置
+  const allMenuItems = [
+    {
+      id: 'announcements',
+      title: '公告管理',
+      description: '管理公告內容與附件',
+      icon: 'mdi-bullhorn',
+      color: 'primary',
+      route: '/admin/announcements',
+      roles: ['admin', 'user'], // 允許的角色
+    },
+    {
+      id: 'history',
+      title: '歷史沿革管理',
+      description: '管理時間軸事件與歷史意義',
+      icon: 'mdi-history',
+      color: 'warning',
+      route: '/admin/history',
+      roles: ['admin', 'user'],
+    },
+    {
+      id: 'directors',
+      title: '委員會管理',
+      description: '管理理事會成員、結構與會議行程',
+      icon: 'mdi-account-tie',
+      color: 'info',
+      route: '/admin/directors',
+      roles: ['admin', 'user'],
+    },
+    {
+      id: 'organization',
+      title: '組織架構管理',
+      description: '管理部門資訊與組織架構圖',
+      icon: 'mdi-office-building',
+      color: 'purple',
+      route: '/admin/organization',
+      roles: ['admin', 'user'],
+    },
+    {
+      id: 'public-affairs',
+      title: '公務資訊管理',
+      description: '管理表單文件與聯絡資訊',
+      icon: 'mdi-file-document-multiple',
+      color: 'teal',
+      route: '/admin/public-affairs',
+      roles: ['admin', 'user'],
+    },
+    {
+      id: 'user',
+      title: '用戶管理',
+      description: '管理系統用戶與權限',
+      icon: 'mdi-account-group',
+      color: 'success',
+      route: '/admin/user',
+      roles: ['admin'], // 只有管理員可以訪問
+    },
+    {
+      id: 'settings',
+      title: '系統設定',
+      description: '系統設定與配置',
+      icon: 'mdi-cog',
+      color: 'info',
+      route: '/admin/settings',
+      roles: ['admin'], // 只有管理員可以訪問
+    },
+  ]
+
+  // 根據用戶角色過濾顯示的選單項目
+  const visibleMenuItems = computed(() => {
+    const userRole = authStore.userMetaInfo?.role || 'user'
+    return allMenuItems.filter(item => item.roles.includes(userRole))
+  })
 
   onMounted(async () => {
     // 初始化認證狀態
@@ -36,6 +109,8 @@
 
       <v-row class="mt-4">
         <v-col
+          v-for="item in visibleMenuItems"
+          :key="item.id"
           cols="12"
           lg="4"
           md="6"
@@ -45,193 +120,20 @@
             elevation="2"
             hover
             rounded="lg"
-            @click="router.push('/admin/announcements')"
+            @click="router.push(item.route)"
           >
             <v-card-text class="pa-6 text-center">
               <v-icon
                 class="mb-4"
-                color="primary"
-                icon="mdi-bullhorn"
+                :color="item.color"
+                :icon="item.icon"
                 size="48"
               />
               <h3 class="text-h5 font-weight-bold mb-2">
-                公告管理
+                {{ item.title }}
               </h3>
               <p class="text-body-2 text-medium-emphasis">
-                管理公告內容與附件
-              </p>
-            </v-card-text>
-          </v-card>
-        </v-col>
-
-        <v-col
-          cols="12"
-          lg="4"
-          md="6"
-        >
-          <v-card
-            class="h-100"
-            elevation="2"
-            hover
-            rounded="lg"
-            @click="router.push('/admin/history')"
-          >
-            <v-card-text class="pa-6 text-center">
-              <v-icon
-                class="mb-4"
-                color="warning"
-                icon="mdi-history"
-                size="48"
-              />
-              <h3 class="text-h5 font-weight-bold mb-2">
-                歷史沿革管理
-              </h3>
-              <p class="text-body-2 text-medium-emphasis">
-                管理時間軸事件與歷史意義
-              </p>
-            </v-card-text>
-          </v-card>
-        </v-col>
-
-        <v-col
-          cols="12"
-          lg="4"
-          md="6"
-        >
-          <v-card
-            class="h-100"
-            elevation="2"
-            hover
-            rounded="lg"
-            @click="router.push('/admin/directors')"
-          >
-            <v-card-text class="pa-6 text-center">
-              <v-icon
-                class="mb-4"
-                color="info"
-                icon="mdi-account-tie"
-                size="48"
-              />
-              <h3 class="text-h5 font-weight-bold mb-2">
-                委員會管理
-              </h3>
-              <p class="text-body-2 text-medium-emphasis">
-                管理理事會成員、結構與會議行程
-              </p>
-            </v-card-text>
-          </v-card>
-        </v-col>
-
-        <v-col
-          cols="12"
-          lg="4"
-          md="6"
-        >
-          <v-card
-            class="h-100"
-            elevation="2"
-            hover
-            rounded="lg"
-            @click="router.push('/admin/organization')"
-          >
-            <v-card-text class="pa-6 text-center">
-              <v-icon
-                class="mb-4"
-                color="purple"
-                icon="mdi-office-building"
-                size="48"
-              />
-              <h3 class="text-h5 font-weight-bold mb-2">
-                組織架構管理
-              </h3>
-              <p class="text-body-2 text-medium-emphasis">
-                管理部門資訊與組織架構圖
-              </p>
-            </v-card-text>
-          </v-card>
-        </v-col>
-
-        <v-col
-          cols="12"
-          lg="4"
-          md="6"
-        >
-          <v-card
-            class="h-100"
-            elevation="2"
-            hover
-            rounded="lg"
-            @click="router.push('/admin/public-affairs')"
-          >
-            <v-card-text class="pa-6 text-center">
-              <v-icon
-                class="mb-4"
-                color="teal"
-                icon="mdi-file-document-multiple"
-                size="48"
-              />
-              <h3 class="text-h5 font-weight-bold mb-2">
-                公務資訊管理
-              </h3>
-              <p class="text-body-2 text-medium-emphasis">
-                管理表單文件與聯絡資訊
-              </p>
-            </v-card-text>
-          </v-card>
-        </v-col>
-
-        <v-col
-          cols="12"
-          lg="4"
-          md="6"
-        >
-          <v-card
-            class="h-100"
-            elevation="2"
-            hover
-            rounded="lg"
-          >
-            <v-card-text class="pa-6 text-center">
-              <v-icon
-                class="mb-4"
-                color="success"
-                icon="mdi-account-group"
-                size="48"
-              />
-              <h3 class="text-h5 font-weight-bold mb-2">
-                用戶管理
-              </h3>
-              <p class="text-body-2 text-medium-emphasis">
-                管理系統用戶與權限
-              </p>
-            </v-card-text>
-          </v-card>
-        </v-col>
-
-        <v-col
-          cols="12"
-          lg="4"
-          md="6"
-        >
-          <v-card
-            class="h-100"
-            elevation="2"
-            hover
-            rounded="lg"
-            @click="router.push('/admin/settings')"
-          >
-            <v-card-text class="pa-6 text-center">
-              <v-icon
-                class="mb-4"
-                color="info"
-                icon="mdi-cog"
-                size="48"
-              />
-              <h3 class="text-h5 font-weight-bold mb-2">
-                系統設定
-              </h3>
-              <p class="text-body-2 text-medium-emphasis">
-                系統設定與配置
+                {{ item.description }}
               </p>
             </v-card-text>
           </v-card>
